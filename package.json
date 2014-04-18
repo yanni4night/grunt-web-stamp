@@ -1,6 +1,6 @@
 {
   "name": "grunt-stamp",
-  "description": "Handle static resource timestamp in css&html",
+  "description": "Handle static resource timestamp",
   "version": "0.1.0",
   "homepage": "https://github.com/yanni4night/grunt-stamp",
   "author": {
@@ -17,7 +17,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/yanni4night/grunt-stamp/blob/master/LICENSE-MIT"
+      "url": "https://github.com/yanni4night/grunt-stamp/blob/master/LICENSE"
     }
   ],
   "engines": {
@@ -36,6 +36,9 @@
     "grunt": "~0.4.4"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "stamp",
+    "web",
+    "preprocess"
   ]
 }
