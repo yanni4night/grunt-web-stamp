@@ -1,6 +1,6 @@
 {
-  "name": "grunt-stamp",
-  "description": "Handle static resource timestamp",
+  "name": "grunt-web-stamp",
+  "description": "Handle static resource timestamp in web pages.",
   "version": "0.1.0",
   "homepage": "https://github.com/yanni4night/grunt-stamp",
   "author": {
