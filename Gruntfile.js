@@ -36,7 +36,8 @@ module.exports = function(grunt) {
       },
       html: {
         options: {
-          prefix: 'http://p0.css.sogoucdn.com/'
+          prefix: 'http://p0.css.sogoucdn.com/',
+          pattern:"sli"
         },
         files: {
           'tmp/index.html': 'test/fixtures/index.html'
