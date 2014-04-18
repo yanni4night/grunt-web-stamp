@@ -25,27 +25,28 @@ module.exports = function(grunt) {
 
     // Before generating any new files, remove any previously-created files.
     clean: {
-      tests: ['tmp'],
+      tests: ['tmp', "**/._*"],
     },
 
     // Configuration to be run (and then tested).
     stamp: {
-      default_options: {
+      options: {
+        baseDir: 'test/fixtures',
+        prefix: 'http://p0.img.sogoucdn.com/'
+      },
+      html: {
         options: {
+          prefix: 'http://p0.css.sogoucdn.com/'
         },
         files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
+          'tmp/index.html': 'test/fixtures/index.html'
+        }
       },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!',
-        },
+      css: {
         files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
+          "tmp/test.css": "test/fixtures/test.css"
+        }
+      }
     },
 
     // Unit tests.
