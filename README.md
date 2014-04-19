@@ -9,7 +9,7 @@ This plugin requires Grunt `~0.4.4`
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
 ```shell
-npm install grunt-stamp --save-dev
+npm install grunt-web-stamp --save-dev
 ```
 
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
@@ -40,7 +40,7 @@ grunt.initConfig({
 
 #### options.baseDir
 Type: `String`
-Default value: `'.  '`
+Default value: `'.'`
 
 A string value that is indicating where the resource files are.
 
@@ -49,6 +49,25 @@ Type: `String`
 Default value: `''`
 
 A string value that will be prepended to each url path.
+
+#### options.pattern
+Type: `String`
+Default value: `'ulsi'`
+
+A char sequence indicates which kinds of url should be handled.
+
+ - 'i':`<img/>`
+ - 'l':`<link/>`
+ - 'u':`url()`
+ - 's':`<script/>`
+
+You can make any combination of them,they're case-sensitive.
+
+#### options.stampName
+Type: `String`
+Default value: `'t'`
+
+Query name for the timestamp.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
