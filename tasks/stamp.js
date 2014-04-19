@@ -11,9 +11,6 @@ var crypto = require('crypto');
 var sysPath = require('path');
 module.exports = function(grunt) {
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
-
   var globalPattern = {
     'u': /url\(\s*(([\'"])?([\S]+?\.(gif|bmp|jpe?g|ico|png))\2?)\s*\)/img,
     'l': /<link.* href=(([\'"])?(.*?\.css)\2?)/img,
@@ -34,23 +31,26 @@ module.exports = function(grunt) {
 
     function _do(n, z) {
       var key = String(z).trim();
+      var bd = options.baseDir;
+      var path, content, md5;
+
       if (/^(#|http|\/\/|data:|about:)|\s/.test(key)) {
         return n;
       }
 
-      var bd = options.baseDir;
-      if('function' === typeof bd){
+      if ('function' === typeof bd) {
         bd = bd(n);
       }
 
-      var path = sysPath.join(bd, key);
+      path = sysPath.join(bd, key);
+
       if (!grunt.file.exists(path)) {
         grunt.log.warn("File " + path + " do not exists!");
         return n;
       }
 
-      var content = grunt.file.read(path);
-      var md5 = crypto.createHash('md5').update(content).digest('hex');
+      content = grunt.file.read(path);
+      md5 = crypto.createHash('md5').update(content).digest('hex');
       md5 = (parseInt(md5, 16) % 1e+6) | 0;
       return n.replace(key, options.prefix + key + '?t=' + md5);
     }
@@ -69,16 +69,19 @@ module.exports = function(grunt) {
       }).map(function(filepath) {
         // Read file source.
         var content = grunt.file.read(filepath);
+        var pat;
+
         var _re = function(n) {
           return _do(n, RegExp.$3);
         };
+
         for (var key in globalPattern) {
-          var pat;
           if ('function' === typeof options.pattern) {
             pat = options.pattern(filepath);
           } else {
             pat = String(options.pattern);
           }
+
           if ( !! ~pat.indexOf(key)) {
             content = content.replace(globalPattern[key], _re);
           }
