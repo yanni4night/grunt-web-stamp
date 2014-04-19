@@ -38,7 +38,12 @@ module.exports = function(grunt) {
         return n;
       }
 
-      var path = sysPath.join(options.baseDir, key);
+      var bd = options.baseDir;
+      if('function' === typeof bd){
+        bd = bd(n);
+      }
+
+      var path = sysPath.join(bd, key);
       if (!grunt.file.exists(path)) {
         grunt.log.warn("File " + path + " do not exists!");
         return n;

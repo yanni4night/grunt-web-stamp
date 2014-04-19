@@ -37,15 +37,18 @@ module.exports = function(grunt) {
       html: {
         options: {
           prefix: 'http://p0.css.sogoucdn.com/',
-          pattern:"sli"
+          pattern: "sli",
+          baseDir:function(filename){
+            return 'test/fixtures';
+          }
         },
         files: {
           'tmp/index.html': 'test/fixtures/index.html'
         }
       },
       css: {
-        options:{
-          pattern:function(){
+        options: {
+          pattern: function() {
             return 'u';
           }
         },
