@@ -1,6 +1,7 @@
-# grunt-stamp
+# grunt-web-stamp
 
-> Handle static resource timestamp in css&html
+> Add timestamp to the url path.It search `<img/>`,`<link/>`,`<script/>` and `url()` to resolve
+> every path and calculate timestamp to append to it.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.4`
@@ -14,7 +15,7 @@ npm install grunt-stamp --save-dev
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('grunt-stamp');
+grunt.loadNpmTasks('grunt-web-stamp');
 ```
 
 ## The "stamp" task
@@ -37,53 +38,19 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.baseDir
 Type: `String`
-Default value: `',  '`
+Default value: `'.  '`
 
-A string value that is used to do something with whatever.
+A string value that is indicating where the resource files are.
 
-#### options.punctuation
+#### options.prefix
 Type: `String`
-Default value: `'.'`
+Default value: `''`
 
-A string value that is used to do something else with whatever else.
-
-### Usage Examples
-
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
-```js
-grunt.initConfig({
-  stamp: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  stamp: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
+A string value that will be prepended to each url path.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
-## Release History
-_(Nothing yet)_
+
