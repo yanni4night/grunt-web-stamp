@@ -44,6 +44,11 @@ module.exports = function(grunt) {
         }
       },
       css: {
+        options:{
+          pattern:function(){
+            return 'u';
+          }
+        },
         files: {
           "tmp/test.css": "test/fixtures/test.css"
         }

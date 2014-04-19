@@ -28,11 +28,14 @@ exports.stamp = {
     done();
   },
   html: function(test) {
-    test.expect(1);
+    test.expect(4);
 
-    var actual = grunt.file.read('tmp/test.css');
-    test.equal(true, true, 'should describe what the default behavior is.');
-
+    var actualCss = grunt.file.read('tmp/test.css');
+    var actualHtml = grunt.file.read('tmp/index.html');
+    test.equal(true, /url\(\s*?.*?t=\d+?\s*?\)/ig.test(actualCss), 'css stamp');
+    test.equal(true, /<link.*? href=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html link stamp');
+    test.equal(true, /<script.*? src=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html script stamp');
+    test.equal(true, /<img.*? src=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html img stamp');
     test.done();
   }
 };
