@@ -51,7 +51,8 @@ module.exports = function(grunt) {
           pattern: function() {
             return 'u';
           },
-          stampName:'_'
+          stampName:'_',
+          crypto:'sha256'
         },
         files: {
           "tmp/test.css": "test/fixtures/test.css"

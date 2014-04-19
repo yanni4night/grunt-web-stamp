@@ -27,12 +27,18 @@ module.exports = function(grunt) {
       prefix: '', //final path prefix
       baseDir: '.', //basic directory of target resources
       pattern: 'ulsi', //url&link&script&img
-      stampName: 't' //p.png?{stampName}=876677
+      stampName: 't', //p.png?{stampName}=876677
+      crypto: 'md5'
     });
 
     if (!/^[\w\-]$/.test(options.stampName)) {
       grunt.log.warn(options.stampName + ' is not a valid stamp name.');
       options.stampName = 't';
+    }
+
+    if (!~['md5', 'sha1', 'sha256', 'sha512'].indexOf(options.crypto)) {
+      grunt.log.warn(options.crypto + ' is not a valid crypto algorithm.');
+      options.crypto = 'md5';
     }
 
     function doReplace(n) {
@@ -57,7 +63,7 @@ module.exports = function(grunt) {
       }
 
       content = grunt.file.read(path);
-      md5 = crypto.createHash('md5').update(content).digest('hex');
+      md5 = crypto.createHash(options.crypto).update(content).digest('hex');
       md5 = (parseInt(md5, 16) % 1e+6) | 0;
       return n.replace(key, options.prefix + key + '?' + options.stampName + '=' + md5);
     }
