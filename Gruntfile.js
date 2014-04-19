@@ -50,7 +50,8 @@ module.exports = function(grunt) {
         options: {
           pattern: function() {
             return 'u';
-          }
+          },
+          stampName:'_'
         },
         files: {
           "tmp/test.css": "test/fixtures/test.css"

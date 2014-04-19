@@ -24,10 +24,16 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('stamp', 'Handle static resource timestamp in css&html', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      prefix: '',//final path prefix
-      baseDir: '.',//basic directory of target resources
-      pattern: 'ulsi' //url&link&script&img
+      prefix: '', //final path prefix
+      baseDir: '.', //basic directory of target resources
+      pattern: 'ulsi', //url&link&script&img
+      stampName: 't' //p.png?{stampName}=876677
     });
+
+    if (!/^[\w\-]$/.test(options.stampName)) {
+      grunt.log.warn(options.stampName + ' is not a valid stamp name.');
+      options.stampName = 't';
+    }
 
     function doReplace(n) {
       var key = String(RegExp.$3).trim();
@@ -53,7 +59,7 @@ module.exports = function(grunt) {
       content = grunt.file.read(path);
       md5 = crypto.createHash('md5').update(content).digest('hex');
       md5 = (parseInt(md5, 16) % 1e+6) | 0;
-      return n.replace(key, options.prefix + key + '?t=' + md5);
+      return n.replace(key, options.prefix + key + '?' + options.stampName + '=' + md5);
     }
 
     // Iterate over all specified file groups.
