@@ -39,10 +39,16 @@ grunt.initConfig({
 ### Options
 
 #### options.baseDir
-Type: `String`
+Type: `String` or `Function`
 Default value: `'.'`
 
 A string value that is indicating where the resource files are.
+
+You can assign a function instead:
+
+    {
+        "baseDir":function(targetFilePath){return "static/";}
+    }
 
 #### options.prefix
 Type: `String`
@@ -51,7 +57,7 @@ Default value: `''`
 A string value that will be prepended to each url path.
 
 #### options.pattern
-Type: `String`
+Type: `String` or `Function`
 Default value: `'ulsi'`
 
 A char sequence indicates which kinds of url should be handled.
@@ -63,11 +69,23 @@ A char sequence indicates which kinds of url should be handled.
 
 You can make any combination of them,they're case-sensitive.
 
+You can assign a function instead.
+
+    {
+        "pattern":function(filepath){return /\.html$/.test(filepath)?"lis":"u";}
+    }
+
 #### options.stampName
 Type: `String`
 Default value: `'t'`
 
 Query name for the timestamp.
+
+#### options.crypto
+Type: `String`
+Default value: `'md5'`
+
+A crypto algorithm name.More available names are `sha1`,`sha256` and `sha512`.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
