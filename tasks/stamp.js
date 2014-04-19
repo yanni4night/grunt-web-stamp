@@ -1,6 +1,6 @@
 /*
- * grunt-stamp
- * https://github.com/yanni4night/grunt-stamp
+ * grunt-web-stamp
+ * https://github.com/yanni4night/grunt-web-stamp
  *
  * Copyright (c) 2014 yinyong
  * Licensed under the MIT license.
@@ -24,28 +24,29 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('stamp', 'Handle static resource timestamp in css&html', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      prefix: '',
-      baseDir: '.',
+      prefix: '',//final path prefix
+      baseDir: '.',//basic directory of target resources
       pattern: 'ulsi' //url&link&script&img
     });
 
-    function _do(n, z) {
-      var key = String(z).trim();
-      var bd = options.baseDir;
+    function doReplace(n) {
+      var key = String(RegExp.$3).trim();
+      var baseDir = options.baseDir;
       var path, content, md5;
 
+      //invalid path or absolute path
       if (/^(#|http|\/\/|data:|about:)|\s/.test(key)) {
         return n;
       }
 
-      if ('function' === typeof bd) {
-        bd = bd(n);
+      if ('function' === typeof baseDir) {
+        baseDir = baseDir(n);
       }
 
-      path = sysPath.join(bd, key);
+      path = sysPath.join(baseDir, key);
 
       if (!grunt.file.exists(path)) {
-        grunt.log.warn("File " + path + " do not exists!");
+        grunt.log.warn("Target file " + path + " not found.");
         return n;
       }
 
@@ -69,21 +70,17 @@ module.exports = function(grunt) {
       }).map(function(filepath) {
         // Read file source.
         var content = grunt.file.read(filepath);
-        var pat;
-
-        var _re = function(n) {
-          return _do(n, RegExp.$3);
-        };
+        var pattern;
 
         for (var key in globalPattern) {
           if ('function' === typeof options.pattern) {
-            pat = options.pattern(filepath);
+            pattern = options.pattern(filepath);
           } else {
-            pat = String(options.pattern);
+            pattern = String(options.pattern);
           }
 
-          if ( !! ~pat.indexOf(key)) {
-            content = content.replace(globalPattern[key], _re);
+          if ( !! ~pattern.indexOf(key)) {
+            content = content.replace(globalPattern[key], doReplace);
           }
         }
 
@@ -94,7 +91,7 @@ module.exports = function(grunt) {
       grunt.file.write(f.dest, src);
 
       // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+      grunt.log.writeln('File "' + f.dest + '" stamped.');
     });
   });
 
