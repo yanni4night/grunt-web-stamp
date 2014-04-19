@@ -1,7 +1,7 @@
 {
   "name": "grunt-web-stamp",
   "description": "Handle static resource timestamp in web pages.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/yanni4night/grunt-stamp",
   "author": {
     "name": "yinyong",
