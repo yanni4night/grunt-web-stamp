@@ -87,6 +87,12 @@ Default value: `'md5'`
 
 A crypto algorithm name.More available names are `sha1`,`sha256` and `sha512`.
 
+#### changeFileName
+Type: `Boolean`
+Default value: `false`
+
+If set to true,stamp will be merged into filname instead of appended.Note that this will rename the target file name too,so keeping the order.
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
