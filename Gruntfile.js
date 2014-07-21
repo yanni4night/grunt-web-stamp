@@ -45,9 +45,7 @@ module.exports = function(grunt) {
         options: {
           prefix: 'http://p0.css.sogoucdn.com/',
           pattern: "sli",
-          baseDir:function(filename){
-            return 'test/fixtures';
-          }
+          baseDir:'test/fixtures'
         },
         files: {
           'tmp/index.html': 'test/fixtures/index.html'

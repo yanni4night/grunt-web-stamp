@@ -10,6 +10,8 @@
 var crypto = require('crypto');
 var sysPath = require('path');
 var fs = require('fs');
+var Stamper = require('filestamp');
+
 module.exports = function(grunt) {
 
   var globalPattern = {
@@ -24,6 +26,7 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('stamp', 'Handle static resource timestamp in css&html', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
+      encoding: 'utf-8',
       prefix: '', //final path prefix
       baseDir: '.', //basic directory of target resources
       pattern: 'ulsi', //url&link&script&img
@@ -32,7 +35,7 @@ module.exports = function(grunt) {
       changeFileName: false//main.css => main_be65d0.css
     });
 
-    var stampCache = {};
+    //var stampCache = {};
     var nameChangeCache = {};
 
     if (!/^[\w\-]$/.test(options.stampName)) {
@@ -44,6 +47,8 @@ module.exports = function(grunt) {
       grunt.log.warn(options.crypto + ' is not a valid crypto algorithm.');
       options.crypto = 'md5';
     }
+
+    var stamper = new Stamper(options);
 
     /**
      * Merge stamp into filename
@@ -76,7 +81,7 @@ module.exports = function(grunt) {
       }
 
       path = sysPath.join(baseDir, key);
-
+/*
       if (!(md5 = stampCache[path])) {
         if (!grunt.file.exists(path)) {
           grunt.log.warn("Target file " + path + " not found.");
@@ -86,7 +91,9 @@ module.exports = function(grunt) {
         md5 = crypto.createHash(options.crypto).update(content).digest('hex');
         md5 = (parseInt(md5, 16) % 1e+6) | 0;
         stampCache[path] = md5;
-      }
+      }*/
+
+      md5 = stamper.compute(key)
 
       if (options.changeFileName) {
         var aliasName;
