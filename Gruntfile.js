@@ -27,14 +27,14 @@ module.exports = function(grunt) {
     clean: {
       tests: ['tmp', "**/._*"],
     },
-  copy:{
-    static:{
-      expand:true,
-      cwd:'test/fixtures',
-      src:['img/*.png'],
-      dest:'tmp'
-    }
-  },
+    copy: {
+      static: {
+        expand: true,
+        cwd: 'test/fixtures',
+        src: ['img/*.png'],
+        dest: 'tmp'
+      }
+    },
     // Configuration to be run (and then tested).
     stamp: {
       options: {
@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         options: {
           prefix: 'http://p0.css.sogoucdn.com/',
           pattern: "s|l|i",
-          baseDir:'test/fixtures'
+          baseDir: 'test/fixtures'
         },
         files: {
           'tmp/index.html': 'test/fixtures/index.html'
@@ -56,14 +56,17 @@ module.exports = function(grunt) {
           pattern: function() {
             return 'u|@';
           },
-          stampName:'_',
-          crypto:'sha256',
-          changeFileName:true,
-          regex:{
-            '@':{
-              pattern:/@([\/\w-\.]+)@/mg,
-              index:1
+          stampName: '_',
+          crypto: 'sha256',
+          changeFileName: true,
+          regex: {
+            '@': {
+              pattern: /@([\/\w-\.]+)@/mg,
+              index: 1
             }
+          },
+          buildFileName: function(name, ext, stamp) {
+            return name + '-' + stamp + "." + ext;
           }
         },
         files: {
@@ -90,7 +93,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('default', ['jshint','clean', 'copy', 'stamp']);
+  grunt.registerTask('default', ['jshint', 'clean', 'copy', 'stamp']);
 
   // By default, lint and run all tests.
   grunt.registerTask('test', ['default', 'nodeunit']);

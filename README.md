@@ -93,6 +93,27 @@ Default value: `false`
 
 If set to true,stamp will be merged into filname instead of appended.Note that this will rename the target file name too,so keeping the order.
 
+#### regex
+Type: `Object`
+Default value: `{}`
+
+Custom search pattern defination.Ex:
+
+    {
+      pattern:/@([\w\/.]+)@/,
+      index:1
+    }
+
+#### buildFileName
+Type: `Function`
+Default value: ``
+
+Custom filename building function.This is only useful when `changeFileName` is set to true.Ex:
+
+    function(filename,filext,stamp{
+      return filename + '_' + stamp + '.' + filext;
+    }
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 

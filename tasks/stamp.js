@@ -42,27 +42,30 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('stamp', 'Handle static resource timestamp in css&html', function() {
 
     var options = this.options({
-      encoding: 'utf-8',
+      encoding: 'utf-8', //Just for read file
       prefix: '', //final path prefix
       baseDir: '.', //basic directory of target resources
       pattern: 'ulsi', //url&link&script&img
-      stampName: sgDefaultStampName, //p.png?{stampName}=876677
+      stampName: sgDefaultStampName, //p.png?{stampName}=876677,not useful when changFileName is set to true
       crypto: 'md5', //md5/sha1/sha256/sha512
       changeFileName: false, //main.css => main_be65d0.css
-      regex: {}
+      regex: {},
+      buildFileName: function(filename, ext, stamp) {
+        return filename + '_' + stamp + "." + ext;
+      }
     });
 
-    if (!/^[\w\-]$/.test(options.stampName)) {
+    if ('string' !== typeof options.stampName || !/^\w+$/.test(options.stampName)) {
       grunt.log.warn(options.stampName + ' is not a valid stamp name,"' + sgDefaultStampName + '" is used.');
       options.stampName = sgDefaultStampName;
     }
 
     var regexes = extend({}, globalPattern, options.regex || {});
 
-    var stamper = new Stamper(options);
-    var nameChangeCache = {};
+    var stamper = new Stamper(options); //Stamper has to be singleton in one task
+    var nameChangeCache = {}; //This is too.
 
-    //
+    //Using options for future more parameters
     var Replacer = function(options) {
       this.options = options; //{patternName}
     };
@@ -75,9 +78,9 @@ module.exports = function(grunt) {
        * @return {[type]}
        */
       changeFileName: function(path, stamp) {
-        if (/(\w+)\.(\w+)$/.test(path)) {
-          var s = RegExp.$1 + "." + RegExp.$2;
-          var d = RegExp.$1 + '_' + stamp + "." + RegExp.$2;
+        if (/(\w+)(\.(\w+))?$/.test(path)) {
+          var s = RegExp.$1 + (RegExp.$2||"");
+          var d = options.buildFileName(RegExp.$1, RegExp.$3, stamp);
           return path.replace(s, d);
         } else {
           return path;
