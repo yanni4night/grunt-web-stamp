@@ -49,7 +49,7 @@ module.exports = function(grunt) {
       encoding: 'utf-8', //Just for read file
       prefix: '', //final path prefix
       baseDir: '.', //basic directory of target resources
-      pattern: 'ulsi', //url&link&script&img
+      pattern: 'u|l|s|i', //url&link&script&img
       stampName: sgDefaultStampName, //p.png?{stampName}=876677,not useful when changFileName is set to true
       crypto: 'md5', //md5/sha1/sha256/sha512
       changeFileName: false, //main.css => main_be65d0.css
