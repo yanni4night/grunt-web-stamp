@@ -136,7 +136,7 @@ module.exports = function(grunt) {
             fs.renameSync(fileName, this.changeFileName(fileName, md5));
             nameChangeCache[fileName] = aliasName;
           }
-          return sysPath.join(prefix, aliasName);
+          return prefix + aliasName;
         }
         //console.log(parsedUrl.href);
         if (!parsedUrl.query[options.stampName]) {
@@ -146,7 +146,7 @@ module.exports = function(grunt) {
         //search is used instead of query when formatting
         delete parsedUrl.search;
         //todo
-        return sysPath.join(prefix, require('url').format(parsedUrl));
+        return prefix + require('url').format(parsedUrl);
 
       }
     };
