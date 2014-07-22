@@ -2,22 +2,22 @@
   "name": "grunt-web-stamp",
   "description": "Handle static resource timestamp in web pages.",
   "version": "0.2.0",
-  "homepage": "https://github.com/yanni4night/grunt-stamp",
+  "homepage": "https://github.com/yanni4night/grunt-web-stamp",
   "author": {
     "name": "yinyong",
     "email": "yanni4night@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:yanni4night/grunt-stamp.git"
+    "url": "git@github.com:yanni4night/grunt-web-stamp.git"
   },
   "bugs": {
-    "url": "https://github.com/yanni4night/grunt-stamp/issues"
+    "url": "https://github.com/yanni4night/grunt-web-stamp/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/yanni4night/grunt-stamp/blob/master/LICENSE"
+      "url": "https://github.com/yanni4night/grunt-web-stamp/blob/master/LICENSE"
     }
   ],
   "engines": {

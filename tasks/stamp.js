@@ -105,6 +105,7 @@ module.exports = function(grunt) {
           end = start + url.length;
           content = content.slice(0, start) + this._stamp(matches[index]) + content.slice(end);
         }
+        
         return content;
       },
       _stamp: function(url) {

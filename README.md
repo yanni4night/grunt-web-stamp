@@ -1,5 +1,7 @@
 # grunt-web-stamp
 
+V2.x published.We now support more custom characteristics.
+
 > Add timestamp to the url path.It search `<img/>`,`<link/>`,`<script/>` and `url()` to resolve
 > every path and calculate timestamp to append to it.
 
@@ -99,9 +101,12 @@ Default value: `{}`
 
 Custom search pattern defination.Ex:
 
-    {
-      pattern:/@([\w\/.]+)@/,
-      index:1
+    regex: {
+      '@': {
+        pattern: /@([\w\/.]+)@/,
+        index: 1,//filepath is in RegExp.$1
+        whole: true //replace whole pattern,including the '@' on the both sides
+      }
     }
 
 #### buildFileName
