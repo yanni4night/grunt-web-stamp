@@ -1,8 +1,11 @@
 @charset 'utf-8';
-@import url(m.css);
 
 .m{
     background: url(img/p.png);
+    background: url("img/p.png");
+    background: url(//img/p.png);
+    background: url(#img/p.png);
+    background: url(img/p.png?t=90);
     content:"@img/p.png@";
     background: url( "img/p.png"  );
     background: url( ' img/p.png ');

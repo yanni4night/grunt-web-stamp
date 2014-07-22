@@ -20,22 +20,22 @@ module.exports = function(grunt) {
 
   var globalPattern = {
     'u': {
-      pattern: /url\(\s*(([\'"])?([\S]+?\.(gif|bmp|jpe?g|ico|png))\2?)\s*\)/img,
-      index: 3,
+      pattern: /\burl\(\s*(['"])?(\s*\S+?\.(gif|bmp|jpe?g|ico|png|webp|woff)\b(\?[^\)"']*)?\s*)\1?\s*\)/img,
+      index: 2,
       whole: false
     },
     'l': {
-      pattern: /<link.* href=(([\'"])?(.*?\.css)\2?)/img,
+      pattern: /<link.* href\s*=((['"])?(\s*\S+?\.css\b(\?[^\)"']*)?\s*)\2?)/img,
       index: 3,
       whole: false
     },
     's': {
-      pattern: /<script.* src=(([\'"])?(.*?\.js)\2?)/img,
+      pattern: /<script.* src\s*=((['"])?(\s*\S+?\.js\b(\?[^\)"']*)?\s*)\2?)/img,
       index: 3,
       whole: false
     },
     'i': {
-      pattern: /<img.* src=(([\'"])(.*?\.(png|gif|jpe?g|bmp|ico))\2)/img,
+      pattern: /<img.* src\s*=((['"])?(\s*\S+?\.(gif|bmp|jpe?g|ico|png|webp|woff)\b(\?[^\)"']*)?\s*)\2?)/img,
       index: 3,
       whole: false
     }
@@ -105,31 +105,44 @@ module.exports = function(grunt) {
           end = start + url.length;
           content = content.slice(0, start) + this._stamp(matches[index]) + content.slice(end);
         }
-        
+
         return content;
       },
       _stamp: function(url) {
-        var path, content, md5, aliasName;
+        var content, md5, aliasName, fileName;
 
-        //invalid path or absolute path
-        if (/^(#|\/\/|[a-z]+:)|\s/i.test(url)) {
+        //Do trim
+        url = String.prototype.trim.call(url);
+
+        var parsedUrl = require('url').parse(url, true);
+
+        if (parsedUrl.protocol || /^(?:#|\/\/)/i.test(url)) {
+          //we ignore illegal urls or urls with protocol
+          //we see '//' as a dynamic protocol
           return url;
         }
 
-        path = sysPath.join(options.baseDir, url);
+        fileName = sysPath.join(options.baseDir, parsedUrl.pathname);
 
-        md5 = stamper.compute(url);
+        md5 = stamper.compute(parsedUrl.pathname);
 
         if (options.changeFileName) {
-          if (!(aliasName = nameChangeCache[path])) {
+          if (!(aliasName = nameChangeCache[fileName])) {
             aliasName = this.changeFileName(url, md5);
-            fs.renameSync(path, this.changeFileName(path, md5));
-            nameChangeCache[path] = aliasName;
+            fs.renameSync(fileName, this.changeFileName(fileName, md5));
+            nameChangeCache[fileName] = aliasName;
           }
-          return options.prefix + aliasName;
+          return sysPath.join(options.prefix, aliasName);
         }
-
-        return options.prefix + url + '?' + options.stampName + '=' + md5;
+        //console.log(parsedUrl.href);
+        if (!parsedUrl.query[options.stampName]) {
+          //If we already has a stamp ,ignore 
+          parsedUrl.query[options.stampName] = md5;
+        }
+        //search is used instead of query when formatting
+        delete parsedUrl.search;
+        //todo
+        return sysPath.join(options.prefix, require('url').format(parsedUrl));
 
       }
     };

@@ -39,11 +39,11 @@ module.exports = function(grunt) {
     stamp: {
       options: {
         baseDir: 'tmp',
-        prefix: 'http://p0.img.sogoucdn.com/'
+        prefix: 'http://p0.img.cdn.com/'
       },
       html: {
         options: {
-          prefix: 'http://p0.css.sogoucdn.com/',
+          prefix: 'http://p0.css.cdn.com/',
           pattern: "s|l|i",
           baseDir: 'test/fixtures'
         },
