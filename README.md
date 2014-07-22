@@ -53,10 +53,10 @@ You can assign a function instead:
     }
 
 #### options.prefix
-Type: `String`
+Type: `String` or `Function`
 Default value: `''`
 
-A string value that will be prepended to each url path.
+A string value that will be prepended to each url path.If it's defined as a function,real filepath will be passed as the only parameter.
 
 #### options.pattern
 Type: `String` or `Function`

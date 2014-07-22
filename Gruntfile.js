@@ -43,7 +43,9 @@ module.exports = function(grunt) {
       },
       html: {
         options: {
-          prefix: 'http://p0.css.cdn.com/',
+          prefix: function(file){
+            return /\.css$/.test(file)?'http://p0.css.cdn.com/':'http://p0.js.cdn.com/';
+          },
           pattern: "s|l|i",
           baseDir: 'test/fixtures'
         },

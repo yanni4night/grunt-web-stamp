@@ -109,7 +109,7 @@ module.exports = function(grunt) {
         return content;
       },
       _stamp: function(url) {
-        var content, md5, aliasName, fileName;
+        var content, md5, aliasName, fileName, prefix = options.prefix;
 
         //Do trim
         url = String.prototype.trim.call(url);
@@ -126,13 +126,17 @@ module.exports = function(grunt) {
 
         md5 = stamper.compute(parsedUrl.pathname);
 
+        if ('function' === typeof prefix) {
+          prefix = prefix(parsedUrl.pathname);
+        }
+
         if (options.changeFileName) {
           if (!(aliasName = nameChangeCache[fileName])) {
             aliasName = this.changeFileName(url, md5);
             fs.renameSync(fileName, this.changeFileName(fileName, md5));
             nameChangeCache[fileName] = aliasName;
           }
-          return sysPath.join(options.prefix, aliasName);
+          return sysPath.join(prefix, aliasName);
         }
         //console.log(parsedUrl.href);
         if (!parsedUrl.query[options.stampName]) {
@@ -142,7 +146,7 @@ module.exports = function(grunt) {
         //search is used instead of query when formatting
         delete parsedUrl.search;
         //todo
-        return sysPath.join(options.prefix, require('url').format(parsedUrl));
+        return sysPath.join(prefix, require('url').format(parsedUrl));
 
       }
     };
