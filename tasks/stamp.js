@@ -21,19 +21,23 @@ module.exports = function(grunt) {
   var globalPattern = {
     'u': {
       pattern: /url\(\s*(([\'"])?([\S]+?\.(gif|bmp|jpe?g|ico|png))\2?)\s*\)/img,
-      index: 3
+      index: 3,
+      whole: false
     },
     'l': {
       pattern: /<link.* href=(([\'"])?(.*?\.css)\2?)/img,
-      index: 3
+      index: 3,
+      whole: false
     },
     's': {
       pattern: /<script.* src=(([\'"])?(.*?\.js)\2?)/img,
-      index: 3
+      index: 3,
+      whole: false
     },
     'i': {
       pattern: /<img.* src=(([\'"])(.*?\.(png|gif|jpe?g|bmp|ico))\2)/img,
-      index: 3
+      index: 3,
+      whole: false
     }
   };
 
@@ -79,7 +83,7 @@ module.exports = function(grunt) {
        */
       changeFileName: function(path, stamp) {
         if (/(\w+)(\.(\w+))?$/.test(path)) {
-          var s = RegExp.$1 + (RegExp.$2||"");
+          var s = RegExp.$1 + (RegExp.$2 || "");
           var d = options.buildFileName(RegExp.$1, RegExp.$3, stamp);
           return path.replace(s, d);
         } else {
@@ -91,13 +95,15 @@ module.exports = function(grunt) {
         var regex = regexes[this.options.patternName];
         var reg = regex.pattern;
         var index = regex.index;
+        var whole = regex.whole;
 
         var matches, url, start, end;
+
         while (matches = reg.exec(content)) {
-          url = matches[index];
+          url = matches[whole ? 0 : index];
           start = matches.index + matches[0].indexOf(url);
           end = start + url.length;
-          content = content.slice(0, start) + this._stamp(url) + content.slice(end);
+          content = content.slice(0, start) + this._stamp(matches[index]) + content.slice(end);
         }
         return content;
       },

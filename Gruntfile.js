@@ -62,7 +62,8 @@ module.exports = function(grunt) {
           regex: {
             '@': {
               pattern: /@([\/\w-\.]+)@/mg,
-              index: 1
+              index: 1,
+              whole: true
             }
           },
           buildFileName: function(name, ext, stamp) {
