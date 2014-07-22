@@ -3,6 +3,7 @@
 
 .m{
     background: url(img/p.png);
+    content:"@img/p.png@";
     background: url( "img/p.png"  );
     background: url( ' img/p.png ');
     background: url(about:blank);

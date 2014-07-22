@@ -39,7 +39,7 @@ grunt.initConfig({
 ### Options
 
 #### options.baseDir
-Type: `String` or `Function`
+Type: `String`
 Default value: `'.'`
 
 A string value that is indicating where the resource files are.

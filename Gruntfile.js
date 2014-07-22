@@ -44,7 +44,7 @@ module.exports = function(grunt) {
       html: {
         options: {
           prefix: 'http://p0.css.sogoucdn.com/',
-          pattern: "sli",
+          pattern: "s|l|i",
           baseDir:'test/fixtures'
         },
         files: {
@@ -54,11 +54,17 @@ module.exports = function(grunt) {
       css: {
         options: {
           pattern: function() {
-            return 'u';
+            return 'u|@';
           },
           stampName:'_',
           crypto:'sha256',
-          changeFileName:true
+          changeFileName:true,
+          regex:{
+            '@':{
+              pattern:/@([\/\w-\.]+)@/mg,
+              index:1
+            }
+          }
         },
         files: {
           "tmp/test.css": "test/fixtures/test.css"
@@ -84,9 +90,9 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'copy', 'stamp', 'nodeunit']);
+  grunt.registerTask('default', ['jshint','clean', 'copy', 'stamp']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('default', ['jshint', 'test']);
+  grunt.registerTask('test', ['default', 'nodeunit']);
 
 };
