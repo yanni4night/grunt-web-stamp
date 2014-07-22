@@ -39,67 +39,6 @@ module.exports = function(grunt) {
 
   Object.freeze(globalPattern);
 
-  function Replacer(options) {
-    //options{pattern,index,baseDir,prefix,changeFileName,stampName}
-    this.options = options;
-  }
-
-  Replacer.prototype = {
-    /**
-     * Merge stamp into filename
-     * @param  {[type]} path  [description]
-     * @param  {[type]} stamp [description]
-     * @return {[type]}       [description]
-     */
-    changeFileName: function(path, stamp) {
-      if (/(\w+)\.(\w+)$/.test(path)) {
-        var s = RegExp.$1 + "." + RegExp.$2;
-        var d = RegExp.$1 + '_' + stamp + "." + RegExp.$2;
-        return path.replace(s, d);
-      } else {
-        return path;
-      }
-    },
-    replace: function(content) {
-
-      var reg = this.options.pattern;
-      var index = this.options.index;
-
-      var matches, url, start, end;
-      while (matches = reg.exec(content)) {
-        url = matches[index];
-        start = matches.index + matches[0].indexOf(url);
-        end = start + url.length;
-        content = content.slice(0, start) + this._stamp(url) + content.slice(end);
-      }
-      return content;
-    },
-    _stamp: function(url) {
-      var path, content, md5, aliasName;
-
-      //invalid path or absolute path
-      if (/^(#|\/\/|[a-z]+:)|\s/i.test(url)) {
-        return url;
-      }
-
-      path = sysPath.join(this.options.baseDir, url);
-
-      md5 = this.options.stamper.compute(url);
-
-      if (this.options.changeFileName) {
-        if (!(aliasName = this.options.nameChangeCache[path])) {
-          aliasName = this.changeFileName(url, md5);
-          fs.renameSync(path, this.changeFileName(path, md5));
-          this.options.nameChangeCache[path] = aliasName;
-        }
-        return this.options.prefix + aliasName;
-      }
-
-      return this.options.prefix + url + '?' + this.options.stampName + '=' + md5;
-
-    }
-  };
-
   grunt.registerMultiTask('stamp', 'Handle static resource timestamp in css&html', function() {
 
     var options = this.options({
@@ -118,10 +57,72 @@ module.exports = function(grunt) {
       options.stampName = sgDefaultStampName;
     }
 
-    var regexes = extend({}, globalPattern, options.regex);
+    var regexes = extend({}, globalPattern, options.regex || {});
 
     var stamper = new Stamper(options);
     var nameChangeCache = {};
+
+    //
+    var Replacer = function(options) {
+      this.options = options; //{patternName}
+    };
+
+    Replacer.prototype = {
+      /**
+       * Merge stamp into filename
+       * @param  {[type]} path
+       * @param  {[type]} stamp
+       * @return {[type]}
+       */
+      changeFileName: function(path, stamp) {
+        if (/(\w+)\.(\w+)$/.test(path)) {
+          var s = RegExp.$1 + "." + RegExp.$2;
+          var d = RegExp.$1 + '_' + stamp + "." + RegExp.$2;
+          return path.replace(s, d);
+        } else {
+          return path;
+        }
+      },
+      replace: function(content) {
+
+        var regex = regexes[this.options.patternName];
+        var reg = regex.pattern;
+        var index = regex.index;
+
+        var matches, url, start, end;
+        while (matches = reg.exec(content)) {
+          url = matches[index];
+          start = matches.index + matches[0].indexOf(url);
+          end = start + url.length;
+          content = content.slice(0, start) + this._stamp(url) + content.slice(end);
+        }
+        return content;
+      },
+      _stamp: function(url) {
+        var path, content, md5, aliasName;
+
+        //invalid path or absolute path
+        if (/^(#|\/\/|[a-z]+:)|\s/i.test(url)) {
+          return url;
+        }
+
+        path = sysPath.join(options.baseDir, url);
+
+        md5 = stamper.compute(url);
+
+        if (options.changeFileName) {
+          if (!(aliasName = nameChangeCache[path])) {
+            aliasName = this.changeFileName(url, md5);
+            fs.renameSync(path, this.changeFileName(path, md5));
+            nameChangeCache[path] = aliasName;
+          }
+          return options.prefix + aliasName;
+        }
+
+        return options.prefix + url + '?' + options.stampName + '=' + md5;
+
+      }
+    };
 
     // Iterate over all specified file groups.
     this.files.forEach(function(f) {
@@ -147,16 +148,8 @@ module.exports = function(grunt) {
           }
 
           if (~pattern.split('|').indexOf(key)) {
-            //What a crap!
             var r = new Replacer({
-              pattern: regexes[key].pattern,
-              index: regexes[key].index,
-              baseDir: options.baseDir,
-              prefix: options.prefix,
-              changeFileName: options.changeFileName,
-              stampName: options.stampName,
-              stamper: stamper,
-              nameChangeCache: nameChangeCache
+              patternName: key
             });
             content = r.replace(content);
           }
