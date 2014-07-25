@@ -43,11 +43,18 @@ module.exports = function(grunt) {
       },
       html: {
         options: {
-          prefix: function(file){
-            return /\.css$/.test(file)?'http://p0.css.cdn.com/':'http://p0.js.cdn.com/';
+          prefix: function(file) {
+            return /\.css$/.test(file) ? 'http://p0.css.cdn.com/' : 'http://p0.js.cdn.com/';
           },
           pattern: "s|l|i",
-          baseDir: 'test/fixtures'
+          baseDir: 'test/fixtures',
+          ignoreMissing: true,
+          missingStamp: function(path) {
+            return Date.now();
+          },
+          fileStamp:function(path){
+            return 0x11929;
+          }
         },
         files: {
           'tmp/index.html': 'test/fixtures/index.html'

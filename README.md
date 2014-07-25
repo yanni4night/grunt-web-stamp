@@ -60,7 +60,7 @@ A string value that will be prepended to each url path.If it's defined as a func
 
 #### options.pattern
 Type: `String` or `Function`
-Default value: `'ulsi'`
+Default value: `'u|l|s|i'`
 
 A char sequence indicates which kinds of url should be handled.
 
@@ -118,6 +118,28 @@ Custom filename building function.This is only useful when `changeFileName` is s
     function(filename,filext,stamp{
       return filename + '_' + stamp + '.' + filext;
     }
+
+#### fileStamp
+Type: `Function`
+Default value: `null`
+
+A function calculate a file's stamp,the file path is the parameter passed inEx:
+
+    function(path){
+      return md5(path) + Date.now();
+    }
+
+#### ignoreMissing
+Type: `Boolean`
+Default value:  `false`
+
+If set true,an UNIX timestamp in 36 _hexadecimal_ will be the stamp if the file is not found.Or else nothing will be appended.
+
+#### missingStamp
+Type: `Function`
+Default value: `null`
+
+Like [filestamp](#filestamp),but is used for missing files.This will not work if [ignoreMissing](#ignoremissing) is set to false.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).

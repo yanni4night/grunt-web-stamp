@@ -5,7 +5,7 @@
  * Copyright (c) 2014 yinyong
  * Licensed under the MIT license.
  */
-
+/*jslint node: true */
 'use strict';
 var crypto = require('crypto');
 var sysPath = require('path');
@@ -54,6 +54,9 @@ module.exports = function(grunt) {
       crypto: 'md5', //md5/sha1/sha256/sha512
       changeFileName: false, //main.css => main_be65d0.css
       regex: {},
+      ignoreMissing: false,
+      missingStamp: null,//Function
+      fileStamp:null,//Function
       buildFileName: function(filename, ext, stamp) {
         return filename + '_' + stamp + "." + ext;
       }
@@ -116,6 +119,9 @@ module.exports = function(grunt) {
 
         var parsedUrl = require('url').parse(url, true);
 
+        //search is used instead of query when formatting
+        delete parsedUrl.search;
+
         if (parsedUrl.protocol || /^(?:#|\/\/)/i.test(url)) {
           //we ignore illegal urls or urls with protocol
           //we see '//' as a dynamic protocol
@@ -124,10 +130,18 @@ module.exports = function(grunt) {
 
         fileName = sysPath.join(options.baseDir, parsedUrl.pathname);
 
-        md5 = stamper.compute(parsedUrl.pathname);
+        md5 = 'function'===typeof options.fileStamp?options.fileStamp(fileName):stamper.compute(parsedUrl.pathname);
 
         if ('function' === typeof prefix) {
           prefix = prefix(parsedUrl.pathname);
+        }
+
+        if (!md5) {
+          if (options.ignoreMissing) {
+            md5 = 'function' === typeof options.missingStamp ? options.missingStamp(fileName) : Number(Date.now()).toString(36);
+          } else {
+            return prefix + url;
+          }
         }
 
         if (options.changeFileName) {
@@ -143,9 +157,7 @@ module.exports = function(grunt) {
           //If we already has a stamp ,ignore 
           parsedUrl.query[options.stampName] = md5;
         }
-        //search is used instead of query when formatting
-        delete parsedUrl.search;
-        //todo
+
         return prefix + require('url').format(parsedUrl);
 
       }
