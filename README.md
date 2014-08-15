@@ -1,6 +1,6 @@
 # grunt-web-stamp
 
-V2.x published.We now support more custom characteristics.
+V0.2.x published.We now support more custom characteristics.
 
 > Add timestamp to the url path.It search `<img/>`,`<link/>`,`<script/>` and `url()` to resolve
 > every path and calculate timestamp to append to it.
@@ -74,7 +74,7 @@ You can make any combination of them,they're case-sensitive.
 You can assign a function instead.
 
     {
-        "pattern":function(filepath){return /\.html$/.test(filepath)?"lis":"u";}
+        "pattern":function(filepath){return /\.html$/.test(filepath)?"l|i|s":"u";}
     }
 
 #### options.stampName

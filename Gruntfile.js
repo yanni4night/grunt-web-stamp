@@ -52,7 +52,7 @@ module.exports = function(grunt) {
           missingStamp: function(path) {
             return Date.now();
           },
-          fileStamp:function(path){
+          fileStamp: function(path) {
             return 0x11929;
           }
         },
@@ -89,7 +89,19 @@ module.exports = function(grunt) {
     nodeunit: {
       tests: ['test/*_test.js'],
     },
-
+    markdown: {
+      options:{
+       template: 'markdown.tpl'
+      },
+      all: {
+        files: [{
+          expand: true,
+          src: '*.md',
+          dest: '.',
+          ext: '.html'
+        }]
+      }
+    }
   });
 
   // Actually load this plugin's task(s).
@@ -100,10 +112,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-markdown');
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('default', ['jshint', 'clean', 'copy', 'stamp']);
+  grunt.registerTask('default', ['jshint', 'clean', 'copy', 'stamp', 'markdown']);
 
   // By default, lint and run all tests.
   grunt.registerTask('test', ['default', 'nodeunit']);
