@@ -31,7 +31,7 @@ module.exports = function(grunt) {
       static: {
         expand: true,
         cwd: 'test/source',
-        src: ['static/img/*.png'],
+        src: ['**/*.{png,css,js,html}'],
         dest: 'tmp'
       }
     },
@@ -43,7 +43,6 @@ module.exports = function(grunt) {
       },
       html: {
         options: {
-          forceAbsolute: true,
           prefix: function(file) {
             return /\.css$/.test(file) ? 'http://p0.css.cdn.com/' : 'http://p0.js.cdn.com/';
           },
@@ -58,12 +57,13 @@ module.exports = function(grunt) {
           }
         },
         expand: true,
-        cwd: 'test/source',
+        cwd: 'tmp',
         src: ['**/*.html'],
         dest: 'tmp'
       },
       css: {
         options: {
+          forceAbsolute: false,
           pattern: function() {
             return 'u|@';
           },
@@ -82,7 +82,7 @@ module.exports = function(grunt) {
           }
         },
         expand: true,
-        cwd: 'test/source',
+        cwd: 'tmp',
         src: ['**/*.css'],
         dest: 'tmp'
       }

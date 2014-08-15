@@ -28,14 +28,14 @@ exports.stamp = {
     done();
   },
   html: function(test) {
-    /*test.expect(4);
+    test.expect(4);
 
-    var actualCss = grunt.file.read('tmp/test.css');
+    var actualCss = grunt.file.read('tmp/static/css/test.css');
     var actualHtml = grunt.file.read('tmp/index.html');
-    test.equal(true, /p[_-]\d+/ig.test(actualCss), 'css stamp');
+    test.equal(8, actualCss.match(/p\-212800/g).length, 'css stamp');
     test.equal(true, /<link.*? href=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html link stamp');
     test.equal(true, /<script.*? src=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html script stamp');
-    test.equal(true, /<img.*? src=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html img stamp');*/
+    test.equal(true, /<img.*? src=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html img stamp');
     test.done();
   }
 };
