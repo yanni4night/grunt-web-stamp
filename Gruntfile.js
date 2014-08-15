@@ -39,7 +39,8 @@ module.exports = function(grunt) {
     stamp: {
       options: {
         baseDir: 'tmp',
-        prefix: 'http://p0.img.cdn.com/'
+        prefix: 'http://p0.img.cdn.com/',
+        forceAbsolute: true
       },
       html: {
         options: {
@@ -90,8 +91,8 @@ module.exports = function(grunt) {
       tests: ['test/*_test.js'],
     },
     markdown: {
-      options:{
-       template: 'markdown.tpl'
+      options: {
+        template: 'markdown.tpl'
       },
       all: {
         files: [{

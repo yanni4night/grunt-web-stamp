@@ -13,6 +13,8 @@ var fs = require('fs');
 var Stamper = require('filestamp');
 var extend = require('extend');
 
+require('string.prototype.startswith');
+
 //It's not useful when changeFileName is set to true
 var sgDefaultStampName = 't';
 
@@ -55,8 +57,9 @@ module.exports = function(grunt) {
       changeFileName: false, //main.css => main_be65d0.css
       regex: {},
       ignoreMissing: false,
-      missingStamp: null,//Function
-      fileStamp:null,//Function
+      forceAbsolute: false,
+      missingStamp: null, //Function
+      fileStamp: null, //Function
       buildFileName: function(filename, ext, stamp) {
         return filename + '_' + stamp + "." + ext;
       }
@@ -130,7 +133,7 @@ module.exports = function(grunt) {
 
         fileName = sysPath.join(options.baseDir, parsedUrl.pathname);
 
-        md5 = 'function'===typeof options.fileStamp?options.fileStamp(fileName):stamper.compute(parsedUrl.pathname);
+        md5 = 'function' === typeof options.fileStamp ? options.fileStamp(fileName) : stamper.compute(parsedUrl.pathname, options.forceAbsolute ? null : (parsedUrl.pathname.startsWith('/') ? null : sysPath.dirname(this.options.filepath)));
 
         if ('function' === typeof prefix) {
           prefix = prefix(parsedUrl.pathname);
@@ -188,7 +191,8 @@ module.exports = function(grunt) {
 
           if (~pattern.split('|').indexOf(key)) {
             var r = new Replacer({
-              patternName: key
+              patternName: key,
+              filepath: filepath
             });
             content = r.replace(content);
           }
