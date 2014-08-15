@@ -1,0 +1,20 @@
+@charset 'utf-8';
+
+.m{
+    background: url(/static/img/p.png);
+    background: url(/static/img/p.png);
+    background: url(../img/p.png);
+    background: url("/static/img/p.png");
+    background: url(//static/img/p.png);
+    background: url(#static/img/p.png);
+    background: url(/static/img/p.png?t=90);
+    content:"@/static/img/p.png@";
+    background: url( "/static/img/p.png"  );
+    background: url( ' /static/img/p.png ');
+    background: url(about:blank);
+    background: url(http://xxx...);
+    background:url(#);
+    background:url(data:image...);
+    background:url(   );
+    background:url(mn);
+}

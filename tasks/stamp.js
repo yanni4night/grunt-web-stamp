@@ -10,7 +10,7 @@
 var crypto = require('crypto');
 var sysPath = require('path');
 var fs = require('fs');
-var Stamper = require('filestamp');
+var Stamper = require('../../filestamp/index'); //require('filestamp');
 var extend = require('extend');
 
 require('string.prototype.startswith');
@@ -57,7 +57,7 @@ module.exports = function(grunt) {
       changeFileName: false, //main.css => main_be65d0.css
       regex: {},
       ignoreMissing: false,
-      forceAbsolute: false,
+      forceAbsolute: true,
       missingStamp: null, //Function
       fileStamp: null, //Function
       buildFileName: function(filename, ext, stamp) {
@@ -115,7 +115,8 @@ module.exports = function(grunt) {
         return content;
       },
       _stamp: function(url) {
-        var content, md5, aliasName, fileName, prefix = options.prefix;
+        var content, md5, aliasName, fileName, prefix = options.prefix,
+          isRelative = false;
 
         //Do trim
         url = String.prototype.trim.call(url);
@@ -131,9 +132,14 @@ module.exports = function(grunt) {
           return url;
         }
 
-        fileName = sysPath.join(options.baseDir, parsedUrl.pathname);
+        if (!parsedUrl.pathname.startsWith('/') && !options.forceAbsolute) {
+          isRelative = true;
+          fileName = sysPath.join(sysPath.dirname(this.options.filepath), parsedUrl.pathname);
+        } else {
+          fileName = sysPath.join(options.baseDir, parsedUrl.pathname);
+        }
 
-        md5 = 'function' === typeof options.fileStamp ? options.fileStamp(fileName) : stamper.compute(parsedUrl.pathname, options.forceAbsolute ? null : (parsedUrl.pathname.startsWith('/') ? null : sysPath.dirname(this.options.filepath)));
+        md5 = 'function' === typeof options.fileStamp ? options.fileStamp(fileName) : stamper.compute(parsedUrl.pathname, isRelative ? sysPath.dirname(this.options.filepath) : null);
 
         if ('function' === typeof prefix) {
           prefix = prefix(parsedUrl.pathname);
@@ -155,7 +161,7 @@ module.exports = function(grunt) {
           }
           return prefix + aliasName;
         }
-        //console.log(parsedUrl.href);
+
         if (!parsedUrl.query[options.stampName]) {
           //If we already has a stamp ,ignore 
           parsedUrl.query[options.stampName] = md5;

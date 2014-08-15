@@ -30,8 +30,8 @@ module.exports = function(grunt) {
     copy: {
       static: {
         expand: true,
-        cwd: 'test/fixtures',
-        src: ['img/*.png'],
+        cwd: 'test/source',
+        src: ['static/img/*.png'],
         dest: 'tmp'
       }
     },
@@ -39,11 +39,11 @@ module.exports = function(grunt) {
     stamp: {
       options: {
         baseDir: 'tmp',
-        prefix: 'http://p0.img.cdn.com/',
-        forceAbsolute: true
+        prefix: 'http://p0.img.cdn.com/'
       },
       html: {
         options: {
+          forceAbsolute: true,
           prefix: function(file) {
             return /\.css$/.test(file) ? 'http://p0.css.cdn.com/' : 'http://p0.js.cdn.com/';
           },
@@ -57,9 +57,10 @@ module.exports = function(grunt) {
             return 0x11929;
           }
         },
-        files: {
-          'tmp/index.html': 'test/fixtures/index.html'
-        }
+        expand: true,
+        cwd: 'test/source',
+        src: ['**/*.html'],
+        dest: 'tmp'
       },
       css: {
         options: {
@@ -80,9 +81,10 @@ module.exports = function(grunt) {
             return name + '-' + stamp + "." + ext;
           }
         },
-        files: {
-          "tmp/test.css": "test/fixtures/test.css"
-        }
+        expand: true,
+        cwd: 'test/source',
+        src: ['**/*.css'],
+        dest: 'tmp'
       }
     },
 

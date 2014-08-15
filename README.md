@@ -141,6 +141,12 @@ Default value: `null`
 
 Like [filestamp](#filestamp),but is used for missing files.This will not work if [ignoreMissing](#ignoremissing) is set to false.
 
+#### forceAbsolute
+Type: `Boolean`
+Default value: `true`
+
+All the urls treated as *absolute*,or only the ones start with '/' would be.
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
