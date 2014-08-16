@@ -40,7 +40,7 @@ grunt.initConfig({
 
 ### Options
 
-#### options.baseDir
+#### baseDir
 Type: `String`
 Default value: `'.'`
 
@@ -49,16 +49,18 @@ A string value that is indicating where the resource files are.
 You can assign a function instead:
 
     {
-        "baseDir":function(targetFilePath){return "static/";}
+        baseDir:function(targetFilePath){return "static/";}
     }
 
-#### options.prefix
+#### prefix
 Type: `String` or `Function`
 Default value: `''`
 
-A string value that will be prepended to each url path.If it's defined as a function,real filepath will be passed as the only parameter.
+A string value that will be prepended to each url path.If it's defined as a function,real filepath will be passed in as the only parameter.Ex:
 
-#### options.pattern
+    prefix:function(filepath){return /\.css$/.test(filepath)?'cdn_css':'cdn_js';}
+
+#### pattern
 Type: `String` or `Function`
 Default value: `'u|l|s|i'`
 
@@ -77,13 +79,13 @@ You can assign a function instead.
         "pattern":function(filepath){return /\.html$/.test(filepath)?"l|i|s":"u";}
     }
 
-#### options.stampName
+#### stampName
 Type: `String`
 Default value: `'t'`
 
 Query name for the timestamp.
 
-#### options.crypto
+#### crypto
 Type: `String`
 Default value: `'md5'`
 
@@ -123,7 +125,7 @@ Custom filename building function.This is only useful when `changeFileName` is s
 Type: `Function`
 Default value: `null`
 
-A function calculate a file's stamp,the file path is the parameter passed inEx:
+A function calculates a file's stamp,the file path is the parameter passed in ,Ex:
 
     function(path){
       return md5(path) + Date.now();
@@ -133,13 +135,13 @@ A function calculate a file's stamp,the file path is the parameter passed inEx:
 Type: `Boolean`
 Default value:  `false`
 
-If set true,an UNIX timestamp in 36 _hexadecimal_ will be the stamp if the file is not found.Or else nothing will be appended.
+If set true,an UNIX timestamp in 36 _hexadecimal_ will be the stamp if the file is not found.Or else nothing will be appended,and warnings is displayed.
 
 #### missingStamp
 Type: `Function`
 Default value: `null`
 
-Like [filestamp](#filestamp),but is used for missing files.This will not work if [ignoreMissing](#ignoremissing) is set to false.
+Like [filestamp](#filestamp),but is used for missing files.This will not work if [ignoreMissing](#ignoremissing) set to false.
 
 #### forceAbsolute
 Type: `Boolean`

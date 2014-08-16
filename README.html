@@ -640,19 +640,20 @@ every path and calculate timestamp to append to it.</p>
   },
 });</code></pre>
 <h3 id="options">Options</h3>
-<h4 id="options-basedir">options.baseDir</h4>
+<h4 id="basedir">baseDir</h4>
 <p>Type: <code>String</code>
 Default value: <code>&#39;.&#39;</code></p>
 <p>A string value that is indicating where the resource files are.</p>
 <p>You can assign a function instead:</p>
 <pre><code>{
-    &quot;baseDir&quot;:function(targetFilePath){return &quot;static/&quot;;}
+    baseDir:function(targetFilePath){return &quot;static/&quot;;}
 }</code></pre>
-<h4 id="options-prefix">options.prefix</h4>
+<h4 id="prefix">prefix</h4>
 <p>Type: <code>String</code> or <code>Function</code>
 Default value: <code>&#39;&#39;</code></p>
-<p>A string value that will be prepended to each url path.If it&#39;s defined as a function,real filepath will be passed as the only parameter.</p>
-<h4 id="options-pattern">options.pattern</h4>
+<p>A string value that will be prepended to each url path.If it&#39;s defined as a function,real filepath will be passed in as the only parameter.Ex:</p>
+<pre><code>prefix:function(filepath){return /\.css$/.test(filepath)?&#39;cdn_css&#39;:&#39;cdn_js&#39;;}</code></pre>
+<h4 id="pattern">pattern</h4>
 <p>Type: <code>String</code> or <code>Function</code>
 Default value: <code>&#39;u|l|s|i&#39;</code></p>
 <p>A char sequence indicates which kinds of url should be handled.</p>
@@ -667,11 +668,11 @@ Default value: <code>&#39;u|l|s|i&#39;</code></p>
 <pre><code>{
     &quot;pattern&quot;:function(filepath){return /\.html$/.test(filepath)?&quot;l|i|s&quot;:&quot;u&quot;;}
 }</code></pre>
-<h4 id="options-stampname">options.stampName</h4>
+<h4 id="stampname">stampName</h4>
 <p>Type: <code>String</code>
 Default value: <code>&#39;t&#39;</code></p>
 <p>Query name for the timestamp.</p>
-<h4 id="options-crypto">options.crypto</h4>
+<h4 id="crypto">crypto</h4>
 <p>Type: <code>String</code>
 Default value: <code>&#39;md5&#39;</code></p>
 <p>A crypto algorithm name.More available names are <code>sha1</code>,<code>sha256</code> and <code>sha512</code>.</p>
@@ -700,18 +701,18 @@ Default value: ``</p>
 <h4 id="filestamp">fileStamp</h4>
 <p>Type: <code>Function</code>
 Default value: <code>null</code></p>
-<p>A function calculate a file&#39;s stamp,the file path is the parameter passed inEx:</p>
+<p>A function calculates a file&#39;s stamp,the file path is the parameter passed in ,Ex:</p>
 <pre><code>function(path){
   return md5(path) + Date.now();
 }</code></pre>
 <h4 id="ignoremissing">ignoreMissing</h4>
 <p>Type: <code>Boolean</code>
 Default value:  <code>false</code></p>
-<p>If set true,an UNIX timestamp in 36 <em>hexadecimal</em> will be the stamp if the file is not found.Or else nothing will be appended.</p>
+<p>If set true,an UNIX timestamp in 36 <em>hexadecimal</em> will be the stamp if the file is not found.Or else nothing will be appended,and warnings is displayed.</p>
 <h4 id="missingstamp">missingStamp</h4>
 <p>Type: <code>Function</code>
 Default value: <code>null</code></p>
-<p>Like <a href="#filestamp">filestamp</a>,but is used for missing files.This will not work if <a href="#ignoremissing">ignoreMissing</a> is set to false.</p>
+<p>Like <a href="#filestamp">filestamp</a>,but is used for missing files.This will not work if <a href="#ignoremissing">ignoreMissing</a> set to false.</p>
 <h4 id="forceabsolute">forceAbsolute</h4>
 <p>Type: <code>Boolean</code>
 Default value: <code>true</code></p>
