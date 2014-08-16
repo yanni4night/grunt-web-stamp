@@ -154,12 +154,14 @@ module.exports = function(grunt) {
         }
 
         if (options.changeFileName) {
-          if (!(aliasName = nameChangeCache[fileName])) {
+          if (!(aliasName = nameChangeCache[fileName]) && fs.existsSync(fileName)) {
             aliasName = this.changeFileName(url, md5);
             fs.renameSync(fileName, this.changeFileName(fileName, md5));
             nameChangeCache[fileName] = aliasName;
           }
-          return prefix + aliasName;
+          if (aliasName) {
+            return prefix + aliasName;
+          }
         }
 
         if (!parsedUrl.query[options.stampName]) {

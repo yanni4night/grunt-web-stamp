@@ -69,6 +69,7 @@ module.exports = function(grunt) {
           },
           stampName: '_',
           crypto: 'sha256',
+          ignoreMissing:true,
           changeFileName: true,
           regex: {
             '@': {

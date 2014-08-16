@@ -32,7 +32,7 @@ exports.stamp = {
 
     var actualCss = grunt.file.read('tmp/static/css/test.css');
     var actualHtml = grunt.file.read('tmp/index.html');
-    test.equal(8, actualCss.match(/p\-212800/g).length, 'css stamp');
+    test.equal(7, actualCss.match(/p\-212800/g).length, 'css stamp');
     test.equal(true, /<link.*? href=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html link stamp');
     test.equal(true, /<script.*? src=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html script stamp');
     test.equal(true, /<img.*? src=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html img stamp');
