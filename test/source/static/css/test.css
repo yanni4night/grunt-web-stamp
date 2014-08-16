@@ -3,6 +3,7 @@
 .m{
     background: url(/static/img/p.png);
     background: url(/static/img/unknown.png);
+    background: url(/static/img/{{tpl}}.png);
     background: url(../img/p.png);
     background: url("/static/img/p.png");
     background: url(//static/img/p.png);

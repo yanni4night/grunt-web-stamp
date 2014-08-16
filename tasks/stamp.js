@@ -10,8 +10,9 @@
 var crypto = require('crypto');
 var sysPath = require('path');
 var fs = require('fs');
-var Stamper = require('../../filestamp/index'); //require('filestamp');
+var Stamper = require('filestamp');
 var extend = require('extend');
+var urljoin = require('urljoin');
 
 require('string.prototype.startswith');
 
@@ -149,7 +150,7 @@ module.exports = function(grunt) {
           if (options.ignoreMissing) {
             md5 = 'function' === typeof options.missingStamp ? options.missingStamp(fileName) : Number(Date.now()).toString(36);
           } else {
-            return prefix + url;
+            return urljoin(prefix, url);
           }
         }
 
@@ -160,7 +161,7 @@ module.exports = function(grunt) {
             nameChangeCache[fileName] = aliasName;
           }
           if (aliasName) {
-            return prefix + aliasName;
+            return urljoin(prefix, aliasName);
           }
         }
 
@@ -169,7 +170,7 @@ module.exports = function(grunt) {
           parsedUrl.query[options.stampName] = md5;
         }
 
-        return prefix + require('url').format(parsedUrl);
+        return urljoin(prefix, require('url').format(parsedUrl));
 
       }
     };
