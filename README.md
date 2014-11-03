@@ -95,7 +95,7 @@ A crypto algorithm name.More available names are `sha1`,`sha256` and `sha512`.
 Type: `Boolean`
 Default value: `false`
 
-If set to true,stamp will be merged into filname instead of appended.Note that this will rename the target file name too,so keeping the order.
+If set to true,stamp will be merged into filname instead of appended.Note that this will **not** rename the real file but **copy** it.
 
 #### regex
 Type: `Object`

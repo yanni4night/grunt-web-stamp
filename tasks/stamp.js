@@ -13,11 +13,10 @@
 'use strict';
 var crypto = require('crypto');
 var sysPath = require('path');
-var fs = require('fs');
 var Stamper = require('filestamp');
 var extend = require('extend');
 var urljoin = require('urljoin');
-var fsExtra = require('fs-extra')l;
+var fs = require('fs-extra');
 
 require('string.prototype.startswith');
 
@@ -162,7 +161,7 @@ module.exports = function(grunt) {
           if (!(aliasName = nameChangeCache[fileName]) && fs.existsSync(fileName)) {
             aliasName = this.changeFileName(url, md5);
             //fs.renameSync(fileName, this.changeFileName(fileName, md5));
-            fsExtra.copySync(fileName, this.changeFileName(fileName, md5));
+            fs.copySync(fileName, this.changeFileName(fileName, md5));
             nameChangeCache[fileName] = aliasName;
           }
           if (aliasName) {
