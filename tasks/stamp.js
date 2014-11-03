@@ -1,14 +1,14 @@
 /**
-  * Copyright (C) 2014 yanni4night.com
-  * stamp.js
-  *
-  * changelog
-  * 2014-11-03[15:22:17]:authorized
-  *
-  * @author yanni4night@gmail.com
-  * @version 0.2.4
-  * @since 0.1.0
-  */
+ * Copyright (C) 2014 yanni4night.com
+ * stamp.js
+ *
+ * changelog
+ * 2014-11-03[15:22:17]:authorized
+ *
+ * @author yanni4night@gmail.com
+ * @version 0.2.4
+ * @since 0.1.0
+ */
 
 'use strict';
 var crypto = require('crypto');
@@ -17,6 +17,7 @@ var fs = require('fs');
 var Stamper = require('filestamp');
 var extend = require('extend');
 var urljoin = require('urljoin');
+var fsExtra = require('fs-extra')l;
 
 require('string.prototype.startswith');
 
@@ -88,9 +89,8 @@ module.exports = function(grunt) {
     Replacer.prototype = {
       /**
        * Merge stamp into filename
-       * @param  {[type]} path
-       * @param  {[type]} stamp
-       * @return {[type]}
+       * @param  {String} path
+       * @param  {String} stamp
        */
       changeFileName: function(path, stamp) {
         if (/(\w+)(\.(\w+))?$/.test(path)) {
@@ -161,7 +161,8 @@ module.exports = function(grunt) {
         if (options.changeFileName) {
           if (!(aliasName = nameChangeCache[fileName]) && fs.existsSync(fileName)) {
             aliasName = this.changeFileName(url, md5);
-            fs.renameSync(fileName, this.changeFileName(fileName, md5));
+            //fs.renameSync(fileName, this.changeFileName(fileName, md5));
+            fsExtra.copySync(fileName, this.changeFileName(fileName, md5));
             nameChangeCache[fileName] = aliasName;
           }
           if (aliasName) {
