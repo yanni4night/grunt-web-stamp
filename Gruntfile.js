@@ -19,6 +19,8 @@ module.exports = function(grunt) {
         '<%= nodeunit.tests %>',
       ],
       options: {
+        strict: true,
+        node: true,
         jshintrc: '.jshintrc',
       },
     },
@@ -69,7 +71,7 @@ module.exports = function(grunt) {
           },
           stampName: '_',
           crypto: 'sha256',
-          ignoreMissing:true,
+          ignoreMissing: true,
           changeFileName: true,
           regex: {
             '@': {

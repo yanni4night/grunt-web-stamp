@@ -1,11 +1,15 @@
-/*
- * grunt-web-stamp
- * https://github.com/yanni4night/grunt-web-stamp
- *
- * Copyright (c) 2014 yinyong
- * Licensed under the MIT license.
- */
-/*jslint node: true */
+/**
+  * Copyright (C) 2014 yanni4night.com
+  * stamp.js
+  *
+  * changelog
+  * 2014-11-03[15:22:17]:authorized
+  *
+  * @author yanni4night@gmail.com
+  * @version 0.2.4
+  * @since 0.1.0
+  */
+
 'use strict';
 var crypto = require('crypto');
 var sysPath = require('path');
