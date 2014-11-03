@@ -27,7 +27,7 @@ module.exports = function(grunt) {
 
   var globalPattern = {
     'u': {
-      pattern: /\burl\(\s*(['"])?(\s*\S+?\.(gif|bmp|jpe?g|ico|png|webp|woff)\b(\?[^\)"']*)?\s*)\1?\s*\)/img,
+      pattern: /\burl\(\s*(['"])?(\s*\S+?\.(gif|bmp|jpe?g|ico|png|webp)\b(\?[^\)"']*)?\s*)\1?\s*\)/img,
       index: 2,
       whole: false
     },
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
       whole: false
     },
     'i': {
-      pattern: /<img.* src\s*=((['"])?(\s*\S+?\.(gif|bmp|jpe?g|ico|png|webp|woff)\b(\?[^\)"']*)?\s*)\2?)/img,
+      pattern: /<img.* src\s*=((['"])?(\s*\S+?\.(gif|bmp|jpe?g|ico|png|webp)\b(\?[^\)"']*)?\s*)\2?)/img,
       index: 3,
       whole: false
     }
