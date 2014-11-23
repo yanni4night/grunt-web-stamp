@@ -615,7 +615,8 @@
 </head>
 <body>
 <h1 id="grunt-web-stamp">grunt-web-stamp</h1>
-<p>V0.2.x published.We now support more custom characteristics.</p>
+<p><a href="https://npmjs.org/package/grunt-web-stamp"><img src="http://img.shields.io/npm/v/grunt-web-stamp.svg" alt="NPM version"></a> <a href="https://npmjs.org/package/grunt-web-stamp"><img src="http://img.shields.io/npm/dm/grunt-web-stamp.svg" alt="Downloads"></a> <a href="https://travis-ci.org/yanni4night/grunt-web-stamp"><img src="http://img.shields.io/travis/yanni4night/grunt-web-stamp.svg" alt="Build Status"></a> <a href="https://ci.appveyor.com/project/yanni4night/grunt-web-stamp"><img src="https://ci.appveyor.com/api/projects/status/pkop2xgtxca40wcd?svg=true" alt="Build status"></a> <a href="https://david-dm.org/yanni4night/grunt-web-stamp"><img src="https://david-dm.org/yanni4night/grunt-web-stamp.svg" alt="Dependency status"></a> <a href="http://gruntjs.com/"><img src="http://img.shields.io/badge/BUILT%20WITH-GRUNT-yellow.svg" alt="Built with Grunt"></a></p>
+<p>We now support more custom characteristics.</p>
 <blockquote>
 <p>Add timestamp to the url path.It search <code>&lt;img/&gt;</code>,<code>&lt;link/&gt;</code>,<code>&lt;script/&gt;</code> and <code>url()</code> to resolve
 every path and calculate timestamp to append to it.</p>
@@ -679,7 +680,7 @@ Default value: <code>&#39;md5&#39;</code></p>
 <h4 id="changefilename">changeFileName</h4>
 <p>Type: <code>Boolean</code>
 Default value: <code>false</code></p>
-<p>If set to true,stamp will be merged into filname instead of appended.Note that this will rename the target file name too,so keeping the order.</p>
+<p>If set to true,stamp will be merged into filname instead of appended.Note that this will <strong>not</strong> rename the real file but <strong>copy</strong> it.</p>
 <h4 id="regex">regex</h4>
 <p>Type: <code>Object</code>
 Default value: <code>{}</code></p>

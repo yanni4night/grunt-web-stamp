@@ -1,6 +1,8 @@
 # grunt-web-stamp
 
-V0.2.x published.We now support more custom characteristics.
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Build status][appveyor-image]][appveyor-url] [![Dependency status][david-dm-image]][david-dm-url] [![Built with Grunt][grunt-image]][grunt-url]
+
+We now support more custom characteristics.
 
 > Add timestamp to the url path.It search `<img/>`,`<link/>`,`<script/>` and `url()` to resolve
 > every path and calculate timestamp to append to it.
@@ -151,5 +153,18 @@ All the urls treated as *absolute*,or only the ones start with '/' would be.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+
+
+[npm-url]: https://npmjs.org/package/grunt-web-stamp
+[downloads-image]: http://img.shields.io/npm/dm/grunt-web-stamp.svg
+[npm-image]: http://img.shields.io/npm/v/grunt-web-stamp.svg
+[travis-url]: https://travis-ci.org/yanni4night/grunt-web-stamp
+[travis-image]: http://img.shields.io/travis/yanni4night/grunt-web-stamp.svg
+[appveyor-image]:https://ci.appveyor.com/api/projects/status/pkop2xgtxca40wcd?svg=true
+[appveyor-url]:https://ci.appveyor.com/project/yanni4night/grunt-web-stamp
+[david-dm-url]:https://david-dm.org/yanni4night/grunt-web-stamp
+[david-dm-image]:https://david-dm.org/yanni4night/grunt-web-stamp.svg
+[grunt-url]:http://gruntjs.com/
+[grunt-image]: http://img.shields.io/badge/BUILT%20WITH-GRUNT-yellow.svg
 
 
