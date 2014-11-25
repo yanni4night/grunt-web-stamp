@@ -166,7 +166,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 [david-dm-image]:https://david-dm.org/yanni4night/grunt-web-stamp.svg
 [david-dm-dev-url]:https://david-dm.org/yanni4night/grunt-web-stamp#info=devDependencies
 [david-dm-dev-image]:https://david-dm.org/yanni4night/grunt-web-stamp/dev-status.svg
-[david-dm-url]:https://coveralls.io/r/yanni4night/grunt-web-stamp?branch=master
-[david-dm-image]:https://coveralls.io/repos/yanni4night/grunt-web-stamp/badge.png?branch=master
+[coveralls-url]:https://coveralls.io/r/yanni4night/grunt-web-stamp?branch=master
+[coveralls-image]:https://coveralls.io/repos/yanni4night/grunt-web-stamp/badge.png?branch=master
 [grunt-url]:http://gruntjs.com/
 [grunt-image]: http://img.shields.io/badge/BUILT%20WITH-GRUNT-yellow.svg
