@@ -1,6 +1,6 @@
 # grunt-web-stamp
 
-[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Build status][appveyor-image]][appveyor-url] [![Dependency status][david-dm-image]][david-dm-url] [![Built with Grunt][grunt-image]][grunt-url]
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Build status][appveyor-image]][appveyor-url] [![Dependency status][david-dm-image]][david-dm-url] [![De vDependency status][david-dm-dev-image]][david-dm-dev-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Built with Grunt][grunt-image]][grunt-url]
 
 We now support more custom characteristics.
 
@@ -160,11 +160,13 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 [npm-image]: http://img.shields.io/npm/v/grunt-web-stamp.svg
 [travis-url]: https://travis-ci.org/yanni4night/grunt-web-stamp
 [travis-image]: http://img.shields.io/travis/yanni4night/grunt-web-stamp.svg
-[appveyor-image]:https://ci.appveyor.com/api/projects/status/pkop2xgtxca40wcd?svg=true
+[appveyor-image]:https://ci.appveyor.com/api/projects/status/bsu9w9ar8pboc2nj?svg=true
 [appveyor-url]:https://ci.appveyor.com/project/yanni4night/grunt-web-stamp
 [david-dm-url]:https://david-dm.org/yanni4night/grunt-web-stamp
 [david-dm-image]:https://david-dm.org/yanni4night/grunt-web-stamp.svg
+[david-dm-dev-url]:https://david-dm.org/yanni4night/grunt-web-stamp#info=devDependencies
+[david-dm-dev-image]:https://david-dm.org/yanni4night/grunt-web-stamp/dev-status.svg
+[david-dm-url]:https://coveralls.io/r/yanni4night/grunt-web-stamp?branch=master
+[david-dm-image]:https://coveralls.io/repos/yanni4night/grunt-web-stamp/badge.png?branch=master
 [grunt-url]:http://gruntjs.com/
 [grunt-image]: http://img.shields.io/badge/BUILT%20WITH-GRUNT-yellow.svg
-
-

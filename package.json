@@ -1,7 +1,7 @@
 {
   "name": "grunt-web-stamp",
   "description": "Handle static resource timestamp in web pages.",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "homepage": "https://github.com/yanni4night/grunt-web-stamp",
   "author": {
     "name": "yinyong",
@@ -14,15 +14,18 @@
   "bugs": {
     "url": "https://github.com/yanni4night/grunt-web-stamp/issues"
   },
-  "licenses": [{
-    "type": "MIT",
-    "url": "https://github.com/yanni4night/grunt-web-stamp/blob/master/LICENSE"
-  }],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/yanni4night/grunt-web-stamp/blob/master/LICENSE"
+    }
+  ],
   "engines": {
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "coveralls": "istanbul cover -- grunt test && grunt coveralls"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
@@ -30,7 +33,10 @@
     "grunt-contrib-copy": "~0.7.0",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-nodeunit": "~0.4.1",
-    "grunt-markdown": "~0.6.1"
+    "grunt-coveralls": "^1.0.0",
+    "grunt-markdown": "~0.6.1",
+    "load-grunt-tasks": "~1.0.0",
+    "time-grunt": "~1.0.0"
   },
   "peerDependencies": {
     "grunt": "~0.4.5"
