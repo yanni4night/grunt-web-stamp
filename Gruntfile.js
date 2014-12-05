@@ -43,8 +43,7 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     stamp: {
       options: {
-        baseDir: 'tmp',
-        prefix: 'http://p0.img.cdn.com/'
+        baseDir: 'tmp'
       },
       html: {
         options: {
@@ -54,10 +53,10 @@ module.exports = function(grunt) {
           pattern: "s|l|i",
           baseDir: 'test/fixtures',
           ignoreMissing: true,
-          missingStamp: function(path) {
+          missingStamp: function(/*path*/) {
             return Date.now();
           },
-          fileStamp: function(path) {
+          fileStamp: function(/*path*/) {
             return 0x11929;
           }
         },
@@ -68,7 +67,7 @@ module.exports = function(grunt) {
       },
       css: {
         options: {
-          forceAbsolute: false,
+
           pattern: function() {
             return 'u|@';
           },

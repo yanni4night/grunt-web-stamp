@@ -2,6 +2,7 @@
   "curly": true,
   "eqeqeq": true,
   "immed": true,
+  "bitwise": true,
   "latedef": true,
   "newcap": true,
   "noarg": true,
@@ -9,5 +10,8 @@
   "undef": true,
   "boss": true,
   "eqnull": true,
-  "node": true
+  "node": true,
+  "noempty": true,
+  "unused": true,
+  "camelcase": true
 }

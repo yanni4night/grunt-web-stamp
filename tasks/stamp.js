@@ -11,13 +11,11 @@
  */
 
 'use strict';
-var crypto = require('crypto');
 var sysPath = require('path');
 var Stamper = require('filestamp');
 var extend = require('extend');
 var urljoin = require('urljoin');
 var fs = require('fs-extra');
-var S = require('string');
 
 //It's not useful when changeFileName is set to true
 var sgDefaultStampName = 't';
@@ -61,7 +59,6 @@ module.exports = function(grunt) {
       changeFileName: false, //main.css => main_be65d0.css
       regex: {},
       ignoreMissing: false,
-      forceAbsolute: true,
       missingStamp: null, //Function
       fileStamp: null, //Function
       buildFileName: function(filename, ext, stamp) {
@@ -77,7 +74,6 @@ module.exports = function(grunt) {
     var regexes = extend({}, globalPattern, options.regex || {});
 
     var stamper = new Stamper(options); //Stamper has to be singleton in one task
-    var nameChangeCache = {}; //This is too.
 
     //Using options for future more parameters
     var Replacer = function(options) {
@@ -91,13 +87,19 @@ module.exports = function(grunt) {
        * @param  {String} stamp
        */
       changeFileName: function(path, stamp) {
-        if (/(\w+)(\.(\w+))?$/.test(path)) {
-          var s = RegExp.$1 + (RegExp.$2 || "");
-          var d = options.buildFileName(RegExp.$1, RegExp.$3, stamp);
-          return path.replace(s, d);
-        } else {
-          return path;
+        var name = sysPath.basename(path);
+        var ext = sysPath.extname(name);
+        var stub = path.slice(0, name ? (-name.length) : path.length - 1);
+        if (ext.length) {
+          name = name.slice(0, -ext.length);
         }
+
+        //Ignore leading dot
+        if ('.' === ext[0]) {
+          ext = ext.slice(1);
+        }
+
+        return urljoin(stub, options.buildFileName(name, ext, stamp));
       },
       replace: function(content) {
 
@@ -118,7 +120,7 @@ module.exports = function(grunt) {
         return content;
       },
       _stamp: function(url) {
-        var content, md5, aliasName, fileName, prefix = options.prefix,
+        var md5, aliasName, fileName, prefix = options.prefix,
           isRelative = false;
 
         //Do trim
@@ -135,7 +137,7 @@ module.exports = function(grunt) {
           return url;
         }
 
-        if (!S(parsedUrl.pathname).startsWith('/') && !options.forceAbsolute) {
+        if (!/^\//.test(parsedUrl.pathname)) {
           isRelative = true;
           fileName = sysPath.join(sysPath.dirname(this.options.filepath), parsedUrl.pathname);
         } else {
@@ -148,30 +150,31 @@ module.exports = function(grunt) {
           prefix = prefix(parsedUrl.pathname);
         }
 
+        if (parsedUrl.query[options.stampName]) {
+          //If a stamp name does exist,just prepend a prefix
+          return urljoin(prefix, url);
+        }
+
         if (!md5) {
           if (options.ignoreMissing) {
             md5 = 'function' === typeof options.missingStamp ? options.missingStamp(fileName) : Number(Date.now()).toString(36);
           } else {
+            //If we do not ignore missing files,just prepend a prefix
             return urljoin(prefix, url);
           }
         }
 
         if (options.changeFileName) {
-          if (!(aliasName = nameChangeCache[fileName]) && fs.existsSync(fileName)) {
-            aliasName = this.changeFileName(url, md5);
+          aliasName = this.changeFileName(url, md5);
+          if (fs.existsSync(fileName)) {
             //fs.renameSync(fileName, this.changeFileName(fileName, md5));
-            fs.copySync(fileName, this.changeFileName(fileName, md5));
-            nameChangeCache[fileName] = aliasName;
+            fs.renameSync(fileName, this.changeFileName(fileName, md5));
           }
-          if (aliasName) {
-            return urljoin(prefix, aliasName);
-          }
+
+          return urljoin(prefix, aliasName);
         }
 
-        if (!parsedUrl.query[options.stampName]) {
-          //If we already has a stamp ,ignore 
-          parsedUrl.query[options.stampName] = md5;
-        }
+        parsedUrl.query[options.stampName] = md5;
 
         return urljoin(prefix, require('url').format(parsedUrl));
 
@@ -201,7 +204,7 @@ module.exports = function(grunt) {
             pattern = String(options.pattern);
           }
 
-          if (~pattern.split('|').indexOf(key)) {
+          if (pattern.split('|').indexOf(key) > -1) {
             var r = new Replacer({
               patternName: key,
               filepath: filepath
