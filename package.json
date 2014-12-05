@@ -28,6 +28,8 @@
     "coveralls": "istanbul cover -- grunt test && grunt coveralls"
   },
   "devDependencies": {
+    "async": "~0.9.0",
+    "filecompare": "0.0.3",
     "grunt": "~0.4.5",
     "grunt-contrib-clean": "~0.6.0",
     "grunt-contrib-copy": "~0.7.0",

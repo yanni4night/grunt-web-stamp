@@ -149,7 +149,8 @@ Like [filestamp](#filestamp),but is used for missing files.This will not work if
 Type: `Boolean`
 Default value: `true`
 
-All the urls treated as *absolute*,or only the ones start with '/' would be.
+<u>All the urls treated as *absolute*,or only the ones start with '/' would be.</u>
+This option has been removed,only path with leading with '/' will be treated as absolute path.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).

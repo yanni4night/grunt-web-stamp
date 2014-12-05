@@ -1,6 +1,9 @@
 'use strict';
 
 var grunt = require('grunt');
+var fc = require('filecompare');
+var async = require('async');
+var path = require('path');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -27,15 +30,30 @@ exports.stamp = {
     // setup here if necessary
     done();
   },
-  html: function(test) {
-    test.expect(4);
+  all: function(test) {
+    test.expect(1);
 
-    var actualCss = grunt.file.read('tmp/static/css/test.css');
-    var actualHtml = grunt.file.read('tmp/index.html');
-    test.equal(7, actualCss.match(/p\-212800/g).length, 'css stamp');
-    test.equal(true, /<link.*? href=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html link stamp');
-    test.equal(true, /<script.*? src=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html script stamp');
-    test.equal(true, /<img.*? src=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html img stamp');
-    test.done();
+    var files = ['index.html', 'static/css/test.css', 'static/js/mk.js'];
+
+    var tasks = files.map(function(file) {
+      return (function(f) {
+        return function(cb) {
+          var tmp = path.join(__dirname, 'tmp', f);
+          var expected = path.join(__dirname, 'expected', f);
+          fc(tmp, expected, function(equal) {
+            if (equal) {
+              grunt.log.debug(f + '(s) equal to each other');
+            } else {
+              cb(new Error(f + '(s) not equal to each other'));
+            }
+          });
+        };
+      })(file);
+    });
+
+    async.parallel(tasks, function(err) {
+      test.ok(!!err, 'All file pairs should equal to each other');
+      test.done();
+    });
   }
 };

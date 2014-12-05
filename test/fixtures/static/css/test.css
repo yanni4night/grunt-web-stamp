@@ -1,0 +1,40 @@
+/*normal absolute path*/
+url(/static/img/p.png)
+/*normal absolute path with missing file on the disk*/
+url(/static/img/missing.png)
+/*absolute path with template tags,this can be seem as another missing file*/
+url(/static/img/{{tpl}}.png)
+/*normal relative path*/
+url(../img/p.png)
+/*normal relative path with missing file*/
+url(../img/missing.png)
+/*relative path with template tags,this can be seem as another missing file*/
+url(../img/{{tpl}}.png)
+/*absolute path wrapped by quotation marks*/
+url("/static/img/p.png")
+/*absolute path wrapped by single quotation marks*/
+url('/static/img/p.png')
+/*relative path wrapped by quotation marks*/
+url("b.jpg")
+/*path with leading double /*/
+url(//static/img/p.png)
+/*path with leading #*/
+url(#static/img/p.png)
+/*absolute path with stamp*/
+url(/static/img/p.png?t=90)
+/*absolute path with spaces outside*/
+url( "/static/img/p.png"  )
+/*absolute path with spaces inside*/
+url( ' /static/img/p.png ')
+/*path is about:blank*/
+url(about:blank)
+/*path with protocol*/
+url(http://xxx...)
+/*path is #*/
+url(#)
+/*path starts with data:*/
+url(data:image...)
+/*spaces path*/
+url(   )
+/*absence path*/
+url(mn)

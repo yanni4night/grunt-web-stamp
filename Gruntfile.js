@@ -15,6 +15,8 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
+    src: 'fixtures',
+    dest: 'tmp',
     jshint: {
       all: [
         'Gruntfile.js',
@@ -30,66 +32,71 @@ module.exports = function(grunt) {
 
     // Before generating any new files, remove any previously-created files.
     clean: {
-      tests: ['tmp', "**/._*"],
+      tests: ['test/<%= dest %>'],
     },
     copy: {
-      static: {
+      all: {
         expand: true,
-        cwd: 'test/source',
-        src: ['**/*.{png,css,js,html}'],
-        dest: 'tmp'
+        cwd: 'test/<%= src %>',
+        src: ['**/*.{gif,jpg,png,css,js,html}'],
+        dest: 'test/<%= dest %>'
       }
     },
     // Configuration to be run (and then tested).
     stamp: {
       options: {
-        baseDir: 'tmp'
+        baseDir: 'test/<%= dest %>'
       },
       html: {
         options: {
           prefix: function(file) {
             return /\.css$/.test(file) ? 'http://p0.css.cdn.com/' : 'http://p0.js.cdn.com/';
           },
-          pattern: "s|l|i",
-          baseDir: 'test/fixtures',
+          // pattern: "s|l|i",
+          baseDir: 'test/absence',
           ignoreMissing: true,
-          missingStamp: function(/*path*/) {
-            return Date.now();
-          },
-          fileStamp: function(/*path*/) {
-            return 0x11929;
+          missingStamp: function( /*path*/ ) {
+            return 'F7F8F9';
           }
         },
         expand: true,
-        cwd: 'tmp',
+        cwd: 'test/<%= dest %>',
         src: ['**/*.html'],
-        dest: 'tmp'
+        dest: 'test/<%= dest %>'
       },
-      css: {
+      js: {
         options: {
-
           pattern: function() {
-            return 'u|@';
+            return '@';
           },
-          stampName: '_',
-          crypto: 'sha256',
-          ignoreMissing: true,
-          changeFileName: true,
           regex: {
             '@': {
               pattern: /@([\/\w-\.]+)@/mg,
               index: 1,
               whole: true
             }
-          },
+          }
+        },
+        expand: true,
+        cwd: 'test/<%= dest %>',
+        src: ['**/*.js'],
+        dest: 'test/<%= dest %>'
+      },
+      css: {
+        options: {
+          stampName: '_',
+          crypto: 'sha256',
+          ignoreMissing: true,
+          changeFileName: true,
+
           buildFileName: function(name, ext, stamp) {
             return name + '-' + stamp + "." + ext;
           }
         },
         expand: true,
-        cwd: 'tmp',
+        cwd: 'test/<%= dest %>',
         src: ['**/*.css'],
-        dest: 'tmp'
+        dest: 'test/<%= dest %>'
       }
     },
 
@@ -112,6 +119,6 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jshint', 'clean', 'copy', 'stamp']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('test', ['default', 'nodeunit']);
+  grunt.registerTask('test', ['default' , 'nodeunit' ]);
 
 };
