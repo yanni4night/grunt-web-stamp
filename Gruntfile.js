@@ -98,19 +98,6 @@ module.exports = function(grunt) {
     nodeunit: {
       tests: ['test/*_test.js'],
     },
-    markdown: {
-      options: {
-        template: 'markdown.tpl'
-      },
-      all: {
-        files: [{
-          expand: true,
-          src: '*.md',
-          dest: '.',
-          ext: '.html'
-        }]
-      }
-    },
     coveralls: {
       all: {
         src: './coverage/lcov.info'
@@ -123,7 +110,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('default', ['jshint', 'clean', 'copy', 'stamp', 'markdown']);
+  grunt.registerTask('default', ['jshint', 'clean', 'copy', 'stamp']);
 
   // By default, lint and run all tests.
   grunt.registerTask('test', ['default', 'nodeunit']);
