@@ -17,8 +17,7 @@ var Stamper = require('filestamp');
 var extend = require('extend');
 var urljoin = require('urljoin');
 var fs = require('fs-extra');
-
-require('string.prototype.startswith');
+var S = require('string');
 
 //It's not useful when changeFileName is set to true
 var sgDefaultStampName = 't';
@@ -136,7 +135,7 @@ module.exports = function(grunt) {
           return url;
         }
 
-        if (!parsedUrl.pathname.startsWith('/') && !options.forceAbsolute) {
+        if (!S(parsedUrl.pathname).startsWith('/') && !options.forceAbsolute) {
           isRelative = true;
           fileName = sysPath.join(sysPath.dirname(this.options.filepath), parsedUrl.pathname);
         } else {

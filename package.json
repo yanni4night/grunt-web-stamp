@@ -51,7 +51,7 @@
     "extend": "~2.0.0",
     "filestamp": "~0.1.4",
     "fs-extra": "~0.12.0",
-    "string.prototype.startswith": "~0.2.0",
+    "string": "~2.2.0",
     "urljoin": "~0.1.4"
   }
 }
