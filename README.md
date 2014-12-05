@@ -119,7 +119,7 @@ Default value: ``
 
 Custom filename building function.This is only useful when `changeFileName` is set to true.Ex:
 
-    function(filename,filext,stamp{
+    function(filename, filext, stamp){
       return filename + '_' + stamp + '.' + filext;
     }
 
