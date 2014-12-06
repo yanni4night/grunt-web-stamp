@@ -53,7 +53,7 @@ exports.stamp = {
     });
 
     async.series(tasks, function(err) {
-      test.ok(!!err, 'All file pairs should equal to each other');
+      test.ok(!err, 'All file pairs should equal to each other but: ' + err);
       test.done();
     });
   }

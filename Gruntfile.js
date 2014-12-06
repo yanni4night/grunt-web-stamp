@@ -45,24 +45,8 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     stamp: {
       options: {
+        prefix: '__cnd_prefix__',
         baseDir: 'test/<%= dest %>'
-      },
-      html: {
-        options: {
-          prefix: function(file) {
-            return /\.css$/.test(file) ? 'http://p0.css.cdn.com/' : 'http://p0.js.cdn.com/';
-          },
-          // pattern: "s|l|i",
-          baseDir: 'test/absence',
-          ignoreError: true,
-          missingStamp: function( /*path*/ ) {
-            return 'F7F8F9';
-          }
-        },
-        expand: true,
-        cwd: 'test/<%= dest %>',
-        src: ['**/*.html'],
-        dest: 'test/<%= dest %>'
       },
       js: {
         options: {
@@ -84,11 +68,8 @@ module.exports = function(grunt) {
       },
       css: {
         options: {
-          stampName: '_',
-          crypto: 'sha256',
-          ignoreError: true,
+          algorithm: 'sha256',
           changeFileName: true,
-
           buildFileName: function(name, ext, stamp) {
             return name + '-' + stamp + "." + ext;
           }
@@ -96,6 +77,23 @@ module.exports = function(grunt) {
         expand: true,
         cwd: 'test/<%= dest %>',
         src: ['**/*.css'],
+        dest: 'test/<%= dest %>'
+      },
+      html: {
+        options: {
+          prefix: function(file) {
+            return /\.css$/.test(file) ? 'http://p0.css.cdn.com/' : 'http://p0.js.cdn.com/';
+          },
+          // pattern: "s|l|i",
+          baseDir: 'test/absence',
+          ignoreError: true,
+          missingStamp: function( /*path*/ ) {
+            return '20141205';
+          }
+        },
+        expand: true,
+        cwd: 'test/<%= dest %>',
+        src: ['**/*.html'],
         dest: 'test/<%= dest %>'
       }
     },
@@ -119,6 +117,6 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jshint', 'clean', 'copy', 'stamp']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('test', ['default' , 'nodeunit' ]);
+  grunt.registerTask('test', ['default', 'nodeunit']);
 
 };

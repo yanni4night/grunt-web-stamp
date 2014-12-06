@@ -4,9 +4,10 @@
  *
  * changelog
  * 2014-11-03[15:22:17]:authorized
+ * 2014-12-06[16:05:03]:never prepend prefix to relative paths
  *
  * @author yanni4night@gmail.com
- * @version 0.2.4
+ * @version 0.2.5
  * @since 0.1.0
  */
 
@@ -50,7 +51,7 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('stamp', 'Handle static resource timestamp in css&html', function() {
 
     var options = this.options({
-      encoding: 'utf-8', //Just for read file
+      // encoding: 'utf-8', //Just for read file
       prefix: '', //final path prefix
       baseDir: '.', //basic directory of target resources
       pattern: 'u|l|s|i', //url&link&script&img
@@ -58,8 +59,8 @@ module.exports = function(grunt) {
       crypto: 'md5', //md5/sha1/sha256/sha512
       changeFileName: false, //main.css => main_be65d0.css
       regex: {},
-      ignoreError: false,
-      missingStamp: null, //Function
+      //  ignoreError: false,
+      // missingStamp: null, //Function
       fileStamp: null, //Function
       buildFileName: function(filename, ext, stamp) {
         return filename + '_' + stamp + "." + ext;
@@ -73,7 +74,11 @@ module.exports = function(grunt) {
 
     var regexes = extend({}, globalPattern, options.regex || {});
 
-    var stamper = new Stamper(options); //Stamper has to be singleton in one task
+    var stamper = new Stamper({
+      algorithm: options.algorithm || options.crypto,
+      baseDir: options.baseDir,
+      ignoreError: true
+    }); //Stamper has to be singleton in one task
 
     //Using options for future more parameters
     var Replacer = function(options) {
@@ -150,18 +155,29 @@ module.exports = function(grunt) {
           prefix = prefix(parsedUrl.pathname);
         }
 
-        if (parsedUrl.query[options.stampName]) {
+
+        //Never prepend prefix to relative paths
+        if (isRelative) {
+          prefix = '';
+        }
+
+
+        //Do not override the existing timestamp
+        if (parsedUrl.query[options.stampName] && !options.changeFileName) {
           //If a stamp name does exist,just prepend a prefix
           return urljoin(prefix, url);
         }
 
         if (!md5) {
-          if (options.ignoreError) {
-            md5 = 'function' === typeof options.missingStamp ? options.missingStamp(fileName) : Number(Date.now()).toString(36);
-          } else {
-            //If we do not ignore missing files,just prepend a prefix
-            return urljoin(prefix, url);
-          }
+
+          //md5 does not exist meaning file cannot be read,
+          //we should skip 'changeFileName'
+          /*if (options.ignoreError) {
+            md5 = 'function' === typeof options.missingStamp ? options.missingStamp(fileName) : ('string' === typeof options.missingStamp ? options.missingStamp : Number(Date.now()).toString(36));
+          } else {*/
+          //If we do not ignore missing files,just prepend a prefix
+          return urljoin(prefix, url);
+          //}
         }
 
         if (options.changeFileName) {

@@ -6,8 +6,12 @@ url(/static/img/missing.png)
 url(/static/img/{{tpl}}.png)
 /*normal relative path*/
 url(../img/p.png)
+/*normal relative path with timestamp*/
+url(../img/p.png?t=89)
 /*normal relative path with missing file*/
 url(../img/missing.png)
+/*normal relative path with missing file and timestamp*/
+url(../img/missing.png?t=89)
 /*relative path with template tags,this can be seem as another missing file*/
 url(../img/{{tpl}}.png)
 /*absolute path wrapped by quotation marks*/

@@ -1,31 +1,35 @@
 /*normal absolute path*/
-url(/static/img/p-212800.png)
+url(__cnd_prefix__/static/img/p-986752.png)
 /*normal absolute path with missing file on the disk*/
-url(/static/img/missing-i3btnn3o.png)
+url(__cnd_prefix__/static/img/missing.png)
 /*absolute path with template tags,this can be seem as another missing file*/
-url(/static/img/{{tpl}}-i3btnn3p.png)
+url(__cnd_prefix__/static/img/{{tpl}}.png)
 /*normal relative path*/
-url(../img/p-212800.png)
+url(../img/p-986752.png)
+/*normal relative path with timestamp*/
+url(../img/p-986752.png?t=89)
 /*normal relative path with missing file*/
-url(../img/missing-i3btnn3p.png)
+url(../img/missing.png)
+/*normal relative path with missing file and timestamp*/
+url(../img/missing.png?t=89)
 /*relative path with template tags,this can be seem as another missing file*/
-url(../img/{{tpl}}-i3btnn3p.png)
+url(../img/{{tpl}}.png)
 /*absolute path wrapped by quotation marks*/
-url("/static/img/p-212800.png")
+url("__cnd_prefix__/static/img/p-986752.png")
 /*absolute path wrapped by single quotation marks*/
-url('/static/img/p-212800.png')
+url('__cnd_prefix__/static/img/p-986752.png')
 /*relative path wrapped by quotation marks*/
-url("b-26496.jpg")
+url("b-299520.jpg")
 /*path with leading double /*/
 url(//static/img/p.png)
 /*path with leading #*/
 url(#static/img/p.png)
 /*absolute path with stamp*/
-url(/static/img/p-212800.png?t=90)
+url(__cnd_prefix__/static/img/p-986752.png?t=90)
 /*absolute path with spaces outside*/
-url( "/static/img/p-212800.png"  )
+url( "__cnd_prefix__/static/img/p-986752.png"  )
 /*absolute path with spaces inside*/
-url( '/static/img/p-212800.png')
+url( '__cnd_prefix__/static/img/p-986752.png')
 /*path is about:blank*/
 url(about:blank)
 /*path with protocol*/
