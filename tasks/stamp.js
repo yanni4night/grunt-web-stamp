@@ -58,7 +58,7 @@ module.exports = function(grunt) {
       crypto: 'md5', //md5/sha1/sha256/sha512
       changeFileName: false, //main.css => main_be65d0.css
       regex: {},
-      ignoreMissing: false,
+      ignoreError: false,
       missingStamp: null, //Function
       fileStamp: null, //Function
       buildFileName: function(filename, ext, stamp) {

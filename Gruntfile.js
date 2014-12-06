@@ -54,7 +54,7 @@ module.exports = function(grunt) {
           },
           // pattern: "s|l|i",
           baseDir: 'test/absence',
-          ignoreMissing: true,
+          ignoreError: true,
           missingStamp: function( /*path*/ ) {
             return 'F7F8F9';
           }
@@ -86,7 +86,7 @@ module.exports = function(grunt) {
         options: {
           stampName: '_',
           crypto: 'sha256',
-          ignoreMissing: true,
+          ignoreError: true,
           changeFileName: true,
 
           buildFileName: function(name, ext, stamp) {
