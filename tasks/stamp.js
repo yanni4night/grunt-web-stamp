@@ -30,17 +30,17 @@ module.exports = function(grunt) {
       whole: false
     },
     'l': {
-      pattern: /<link.* href\s*=((['"])?(\s*\S+?\.css\b(\?[^\)"']*)?\s*)\2?)/img,
+      pattern: /<link[^>]*? href\s*=((['"])?(\s*\S+?\.css\b(\?[^\)"']*)?\s*)\2?)/img,
       index: 3,
       whole: false
     },
     's': {
-      pattern: /<script.* src\s*=((['"])?(\s*\S+?\.js\b(\?[^\)"']*)?\s*)\2?)/img,
+      pattern: /<script[^>]*? src\s*=((['"])?(\s*\S+?\.js\b(\?[^\)"']*)?\s*)\2?)/img,
       index: 3,
       whole: false
     },
     'i': {
-      pattern: /<img.* src\s*=((['"])?(\s*\S+?\.(gif|bmp|jpe?g|ico|png|webp)\b(\?[^\)"']*)?\s*)\2?)/img,
+      pattern: /<img[^>]*? src\s*=((['"])?(\s*\S+?\.(gif|bmp|jpe?g|ico|png|webp)\b(\?[^\)"']*)?\s*)\2?)/img,
       index: 3,
       whole: false
     }

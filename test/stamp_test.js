@@ -83,10 +83,15 @@ exports.stamp = {
     test.done();
   },
   copy: function(test) {
-    var matches = grunt.file.read('test/tmp/copysrc/index.html').match(/bulk_\d+.css/);
+    var content = grunt.file.read('test/tmp/copysrc/index.html');
+    var matches = content.match(/bulk_\d+.css/);
     test.ok(!!(matches || [])[0], 'filename in html should renamed');
     test.ok(grunt.file.exists('test/tmp/copysrc/' + matches[0]), 'bulk.css should be copied');
     test.ok(grunt.file.exists('test/tmp/copysrc/bulk.css'), 'bulk.css should be reserved');
+    matches = content.match(/mock_\d+.js/);
+    test.ok(!!(matches || [])[0], 'filename in html should renamed');
+    test.ok(grunt.file.exists('test/tmp/copysrc/' + matches[0]), 'mock.js should be copied');
+    test.ok(grunt.file.exists('test/tmp/copysrc/mock.js'), 'mock.js should be reserved');
     test.done();
   }
 };
