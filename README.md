@@ -104,6 +104,13 @@ Default value: `false`
 
 If set to true,stamp will be merged into filname instead of appended.Note that this will **not** rename the real file but **copy** it.
 
+####doCopy
+Type: `Boolean`
+Default value: `false`
+Since: 0.5.0
+
+Copy instead of rename when `changeFileName` is set to true.
+
 #### regex
 Type: `Object`
 Default value: `{}`
