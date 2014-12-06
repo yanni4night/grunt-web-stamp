@@ -51,16 +51,14 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('stamp', 'Handle static resource timestamp in css&html', function() {
 
     var options = this.options({
-      // encoding: 'utf-8', //Just for read file
       prefix: '', //final path prefix
       baseDir: '.', //basic directory of target resources
       pattern: 'u|l|s|i', //url&link&script&img
       stampName: sgDefaultStampName, //p.png?{stampName}=876677,not useful when changFileName is set to true
-      crypto: 'md5', //md5/sha1/sha256/sha512
+      algorithm: 'md5', //digest/sha1/sha256/sha512
+      crypto:null,//alias for algorithm
       changeFileName: false, //main.css => main_be65d0.css
       regex: {},
-      //  ignoreError: false,
-      // missingStamp: null, //Function
       fileStamp: null, //Function
       buildFileName: function(filename, ext, stamp) {
         return filename + '_' + stamp + "." + ext;
@@ -125,7 +123,7 @@ module.exports = function(grunt) {
         return content;
       },
       _stamp: function(url) {
-        var md5, aliasName, fileName, prefix = options.prefix,
+        var digest, aliasName, fileName, prefix = options.prefix,
           isRelative = false;
 
         //Do trim
@@ -149,7 +147,7 @@ module.exports = function(grunt) {
           fileName = sysPath.join(options.baseDir, parsedUrl.pathname);
         }
 
-        md5 = 'function' === typeof options.fileStamp ? options.fileStamp(fileName) : stamper.compute(parsedUrl.pathname, isRelative ? sysPath.dirname(this.options.filepath) : null);
+        digest = 'function' === typeof options.fileStamp ? options.fileStamp(fileName) : stamper.compute(parsedUrl.pathname, isRelative ? sysPath.dirname(this.options.filepath) : null);
 
         if ('function' === typeof prefix) {
           prefix = prefix(parsedUrl.pathname);
@@ -161,36 +159,28 @@ module.exports = function(grunt) {
           prefix = '';
         }
 
-
         //Do not override the existing timestamp
         if (parsedUrl.query[options.stampName] && !options.changeFileName) {
           //If a stamp name does exist,just prepend a prefix
           return urljoin(prefix, url);
         }
 
-        if (!md5) {
-
-          //md5 does not exist meaning file cannot be read,
-          //we should skip 'changeFileName'
-          /*if (options.ignoreError) {
-            md5 = 'function' === typeof options.missingStamp ? options.missingStamp(fileName) : ('string' === typeof options.missingStamp ? options.missingStamp : Number(Date.now()).toString(36));
-          } else {*/
+        if (!digest) {
           //If we do not ignore missing files,just prepend a prefix
           return urljoin(prefix, url);
-          //}
         }
 
         if (options.changeFileName) {
-          aliasName = this.changeFileName(url, md5);
+          aliasName = this.changeFileName(url, digest);
           if (fs.existsSync(fileName)) {
-            //fs.renameSync(fileName, this.changeFileName(fileName, md5));
-            fs.renameSync(fileName, this.changeFileName(fileName, md5));
+            //fs.renameSync(fileName, this.changeFileName(fileName, digest));
+            fs.renameSync(fileName, this.changeFileName(fileName, digest));
           }
 
           return urljoin(prefix, aliasName);
         }
 
-        parsedUrl.query[options.stampName] = md5;
+        parsedUrl.query[options.stampName] = digest;
 
         return urljoin(prefix, require('url').format(parsedUrl));
 

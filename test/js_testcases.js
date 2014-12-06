@@ -13,10 +13,10 @@
 var PREFIX = '__img_cnd_prefix__';
 var STAMP = '\\?t=\\d+';
 var cases = {
-    '"@/static/img/p.png@"': new RegExp('"' + PREFIX + '/static/img/p.png' + STAMP + '"'),
+    '"@/static/img/a.png@"': new RegExp('"' + PREFIX + '/static/img/a.png' + STAMP + '"'),
     //using relative path in javascript makes no sense!
-    '"@../img/p.png@"': new RegExp('"../img/p.png' + STAMP + '"'),
-    '"@../img/p.png?p=0@"': new RegExp('"../img/p.png\\?p=0&' + STAMP.slice(2) + '"')
+    '"@../img/a.png@"': new RegExp('"../img/a.png' + STAMP + '"'),
+    '"@../img/a.png?p=0@"': new RegExp('"../img/a.png\\?p=0&' + STAMP.slice(2) + '"')
 };
 
 exports.cases = cases;

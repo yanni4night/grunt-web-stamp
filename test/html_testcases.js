@@ -14,6 +14,8 @@ var STAMP = '\\?t=\\d+';
 var cases = {
     /* normal relative link path */
     '<link href ="static/css/tmp.css" rel="stylesheet"/>': new RegExp('static/css/tmp.css' + STAMP),
+    /* normal relative link path with singel quotation marks*/
+    '<link href =\'static/css/tmp.css\' rel="stylesheet"/>': new RegExp('static/css/tmp.css' + STAMP),
     /* normal absolute path */
     '<link href ="/static/css/tmp.css" rel="stylesheet"/>': new RegExp(PREFIX + '/static/css/tmp.css' + STAMP),
     /* missing path */
@@ -31,8 +33,10 @@ var cases = {
     /* path with stamp */
     '<script src="static/js/mk.js?t=90" type="text/javascript"></script>': true,
     /* path in url */
-    'url(static/img/p.png)': true,
+    'url(static/img/c.png)': new RegExp('url\\(static/img/c.png' + STAMP + '\\)'),
     /* path in img element */
+    '<img src="static/img/c.png"/>': new RegExp('"static/img/c.png' + STAMP + '"'),
+    /* img which is missing */
     '<img src="static/img/p.png"/>': true
 };
 exports.cases = cases;
