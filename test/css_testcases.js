@@ -23,11 +23,11 @@ var cases = {
     /*normal relative path with timestamp*/
     'url(../img/p.png?t=88)': new RegExp('url\\(../img/p' + STAMP + '.png\\?t=88\\)'),
     /*normal relative path with missing file*/
-    'url(../img/missing.png)': 'url(../img/missing.png)',
+    'url(../img/missing.png)': true,
     /*normal relative path with missing file and timestamp*/
-    'url(../img/missing.png?t=89)': 'url(../img/missing.png?t=89)',
+    'url(../img/missing.png?t=89)': true,
     /*relative path with template tags,this can be seem as another missing file*/
-    'url(../img/{{tpl}}.png)': 'url(../img/{{tpl}}.png)',
+    'url(../img/{{tpl}}.png)': true,
     /*absolute path wrapped by quotation marks*/
     'url("/static/img/p.png")': new RegExp('url\\("' + PREFIX + '/static/img/p' + STAMP + '.png"\\)'),
     /*absolute path wrapped by single quotation marks*/
@@ -35,9 +35,9 @@ var cases = {
     /*relative path wrapped by quotation marks*/
     'url("b.jpg")': new RegExp('url\\("b' + STAMP + '.jpg"\\)'),
     /*path with leading double /*/
-    'url(//static/img/p.png)': 'url(//static/img/p.png)',
+    'url(//static/img/p.png)': true,
     /*path with leading #*/
-    'url(#static/img/p.png)': 'url(#static/img/p.png)',
+    'url(#static/img/p.png)': true,
     /*absolute path with stamp*/
     'url(/static/img/p.png?t=90)': new RegExp('url\\(' + PREFIX + '/static/img/p' + STAMP + '.png\\?t=90\\)'),
     /*absolute path with spaces outside*/
@@ -45,17 +45,17 @@ var cases = {
     /*absolute path with spaces inside*/
     'url( \' /static/img/p.png \')': new RegExp('url\\( \'' + PREFIX + '/static/img/p' + STAMP + '.png\'\\)'),
     /*path is about:blank*/
-    'url(about:blank)': 'url(about:blank)',
+    'url(about:blank)': true,
     /*path with protocol*/
-    'url(http://xxx...)': 'url(http://xxx...)',
+    'url(http://xxx...)': true,
     /*path is #*/
-    'url(#)': 'url(#)',
+    'url(#)': true,
     /*path starts with data:*/
-    'url(data:image...)': 'url(data:image...)',
+    'url(data:image...)': true,
     /*spaces path*/
-    'url(   )': 'url(   )',
+    'url(   )': true,
     /*absence path*/
-    'url(mn)': 'url(mn)'
+    'url(mn)': true
 };
 
 exports.cases = cases;

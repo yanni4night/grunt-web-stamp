@@ -55,7 +55,7 @@ module.exports = function(grunt) {
           },
           regex: {
             '@': {
-              pattern: /@([\/\w-\.]+)@/mg,
+              pattern: /@([\/\w-\.\?=]+)@/mg,
               index: 1,
               whole: true
             }
@@ -106,6 +106,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('cases', 'create test cases', function() {
     grunt.file.write('test/fixtures/static/css/tmp.css', require('./test/css_testcases').keys.join('\n'));
+    grunt.file.write('test/fixtures/static/js/tmp.js', require('./test/js_testcases').keys.join('\n'));
     grunt.file.write('test/fixtures/tmp.html', require('./test/html_testcases').keys.join('\n'));
   });
 
