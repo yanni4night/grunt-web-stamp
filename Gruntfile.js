@@ -45,7 +45,7 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     stamp: {
       options: {
-        prefix: '__cnd_prefix__',
+        prefix: '__img_cnd_prefix__',
         baseDir: 'test/<%= dest %>'
       },
       js: {
@@ -82,14 +82,9 @@ module.exports = function(grunt) {
       html: {
         options: {
           prefix: function(file) {
-            return /\.css$/.test(file) ? 'http://p0.css.cdn.com/' : 'http://p0.js.cdn.com/';
+            return /\.css$/.test(file) ? '__css_cnd_prefix__' : '__js_cnd_prefix__';
           },
-          // pattern: "s|l|i",
-          baseDir: 'test/absence',
-          ignoreError: true,
-          missingStamp: function( /*path*/ ) {
-            return '20141205';
-          }
+          ignoreError: true
         },
         expand: true,
         cwd: 'test/<%= dest %>',
@@ -110,8 +105,8 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('cases', 'create test cases', function() {
-    var cssCases = require('./test/css_testcases');
-    grunt.file.write('test/fixtures/static/css/tmp.css', cssCases.keys.join('\n'));
+    grunt.file.write('test/fixtures/static/css/tmp.css', require('./test/css_testcases').keys.join('\n'));
+    grunt.file.write('test/fixtures/tmp.html', require('./test/html_testcases').keys.join('\n'));
   });
 
   // Actually load this plugin's task(s).
@@ -119,9 +114,9 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('default', ['jshint', 'clean', 'copy', 'stamp']);
+  grunt.registerTask('default', ['jshint', 'clean','cases', 'copy', 'stamp']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('test', ['cases', 'default', 'nodeunit']);
+  grunt.registerTask('test', [ 'default', 'nodeunit']);
 
 };

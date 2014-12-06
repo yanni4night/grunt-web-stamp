@@ -9,7 +9,7 @@
  * @version 0.1.0
  * @since 0.1.0
  */
-var PREFIX = '__cnd_prefix__';
+var PREFIX = '__img_cnd_prefix__';
 var STAMP = '\\-\\d+';
 var cases = {
     /*normal absolute path*/

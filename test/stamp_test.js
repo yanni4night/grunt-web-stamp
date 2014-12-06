@@ -45,5 +45,23 @@ exports.stamp = {
     });
 
     test.done();
+  },
+  html: function(test) {
+    var htmlCases = require('./html_testcases');
+    var srclines = grunt.file.read('test/fixtures/tmp.html').split('\n');
+    var tmplines = grunt.file.read('test/tmp/tmp.html').split('\n');
+
+    test.expect(tmplines.length * 2 + 1);
+
+    test.equal(srclines.length, tmplines.length, 'Number of lines of src and tmp files should equal');
+
+    tmplines.forEach(function(line, idx) {
+      var key = srclines[idx],
+        reg = htmlCases.cases[key];
+      test.ok(!!reg, 'Pattern for ' + key + ' should exist');
+      test.ok(util.isRegExp(reg) ? reg.test(line) : ('string' === typeof reg ? reg === line : key === line), line + ' should match ' + reg);
+    });
+
+    test.done();
   }
 };
