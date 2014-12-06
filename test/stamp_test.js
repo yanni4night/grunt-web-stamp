@@ -43,6 +43,7 @@ exports.stamp = {
           fc(tmp, expected, function(equal) {
             if (equal) {
               grunt.log.debug(f + '(s) equal to each other');
+              cb();
             } else {
               cb(new Error(f + '(s) not equal to each other'));
             }
@@ -51,7 +52,7 @@ exports.stamp = {
       })(file);
     });
 
-    async.parallel(tasks, function(err) {
+    async.series(tasks, function(err) {
       test.ok(!!err, 'All file pairs should equal to each other');
       test.done();
     });
