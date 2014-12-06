@@ -109,6 +109,11 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('cases', 'create test cases', function() {
+    var cssCases = require('./test/css_testcases');
+    grunt.file.write('test/fixtures/static/css/tmp.css', cssCases.keys.join('\n'));
+  });
+
   // Actually load this plugin's task(s).
   grunt.loadTasks('tasks');
 
@@ -117,6 +122,6 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jshint', 'clean', 'copy', 'stamp']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('test', ['default', 'nodeunit']);
+  grunt.registerTask('test', ['cases', 'default', 'nodeunit']);
 
 };

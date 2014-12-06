@@ -1,6 +1,9 @@
 node_modules
 npm-debug.log
 tmp
+tmp.css
+tmp.js
+tmp.html
 *DS_Store
 ._*
 coverage

@@ -1,9 +1,7 @@
 'use strict';
 
 var grunt = require('grunt');
-var fc = require('filecompare');
-var async = require('async');
-var path = require('path');
+var util = require('util');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -30,31 +28,22 @@ exports.stamp = {
     // setup here if necessary
     done();
   },
-  all: function(test) {
-    test.expect(1);
+  css: function(test) {
+    var cssCases = require('./css_testcases');
+    var srclines = grunt.file.read('test/fixtures/static/css/tmp.css').split('\n');
+    var tmplines = grunt.file.read('test/tmp/static/css/tmp.css').split('\n');
 
-    var files = ['index.html', 'static/css/test.css', 'static/js/mk.js'];
+    test.expect(tmplines.length * 2 + 1);
 
-    var tasks = files.map(function(file) {
-      return (function(f) {
-        return function(cb) {
-          var tmp = path.join(__dirname, 'tmp', f);
-          var expected = path.join(__dirname, 'expected', f);
-          fc(tmp, expected, function(equal) {
-            if (equal) {
-              grunt.log.debug(f + '(s) equal to each other');
-              cb();
-            } else {
-              cb(new Error(f + '(s) not equal to each other'));
-            }
-          });
-        };
-      })(file);
+    test.equal(srclines.length, tmplines.length, 'Number of lines of src and tmp files should equal');
+
+    tmplines.forEach(function(line, idx) {
+      var key = srclines[idx],
+        reg = cssCases.cases[key];
+      test.ok(!!reg, 'Pattern for ' + key + ' should exist');
+      test.ok(util.isRegExp(reg) ? reg.test(line) : reg === line, line + ' should match ' + reg);
     });
 
-    async.series(tasks, function(err) {
-      test.ok(!err, 'All file pairs should equal to each other but: ' + err);
-      test.done();
-    });
+    test.done();
   }
 };
