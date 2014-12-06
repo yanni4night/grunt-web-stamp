@@ -156,7 +156,7 @@ module.exports = function(grunt) {
         }
 
         if (!md5) {
-          if (options.ignoreMissing) {
+          if (options.ignoreError) {
             md5 = 'function' === typeof options.missingStamp ? options.missingStamp(fileName) : Number(Date.now()).toString(36);
           } else {
             //If we do not ignore missing files,just prepend a prefix
