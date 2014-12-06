@@ -56,10 +56,11 @@ module.exports = function(grunt) {
       pattern: 'u|l|s|i', //url&link&script&img
       stampName: sgDefaultStampName, //p.png?{stampName}=876677,not useful when changFileName is set to true
       algorithm: 'md5', //digest/sha1/sha256/sha512
-      crypto:null,//alias for algorithm
+      crypto: null, //alias for algorithm
       changeFileName: false, //main.css => main_be65d0.css
       regex: {},
       fileStamp: null, //Function
+      doCopy: false,
       buildFileName: function(filename, ext, stamp) {
         return filename + '_' + stamp + "." + ext;
       }
@@ -173,8 +174,7 @@ module.exports = function(grunt) {
         if (options.changeFileName) {
           aliasName = this.changeFileName(url, digest);
           if (fs.existsSync(fileName)) {
-            //fs.renameSync(fileName, this.changeFileName(fileName, digest));
-            fs.renameSync(fileName, this.changeFileName(fileName, digest));
+            (options.doCopy? fs.copySync : fs.renameSync).call(fs, fileName, this.changeFileName(fileName, digest));
           }
 
           return urljoin(prefix, aliasName);

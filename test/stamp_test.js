@@ -31,7 +31,7 @@ exports.stamp = {
   js: function(test) {
     var jsCases = require('./js_testcases');
     var srclines = grunt.file.read('test/fixtures/static/js/tmp.js').split('\n');
-    var tmplines = grunt.file.read('test/tmp/static/js/tmp.js').split('\n');
+    var tmplines = grunt.file.read('test/tmp/fixtures/static/js/tmp.js').split('\n');
 
     test.expect(tmplines.length * 2 + 1);
 
@@ -49,7 +49,7 @@ exports.stamp = {
   css: function(test) {
     var cssCases = require('./css_testcases');
     var srclines = grunt.file.read('test/fixtures/static/css/tmp.css').split('\n');
-    var tmplines = grunt.file.read('test/tmp/static/css/tmp.css').split('\n');
+    var tmplines = grunt.file.read('test/tmp/fixtures/static/css/tmp.css').split('\n');
 
     test.expect(tmplines.length * 2 + 1);
 
@@ -67,7 +67,7 @@ exports.stamp = {
   html: function(test) {
     var htmlCases = require('./html_testcases');
     var srclines = grunt.file.read('test/fixtures/tmp.html').split('\n');
-    var tmplines = grunt.file.read('test/tmp/tmp.html').split('\n');
+    var tmplines = grunt.file.read('test/tmp/fixtures/tmp.html').split('\n');
 
     test.expect(tmplines.length * 2 + 1);
 
@@ -80,6 +80,13 @@ exports.stamp = {
       test.ok(util.isRegExp(reg) ? reg.test(line) : ('string' === typeof reg ? reg === line : key === line), line + ' should match ' + reg);
     });
 
+    test.done();
+  },
+  copy: function(test) {
+    var matches = grunt.file.read('test/tmp/copysrc/index.html').match(/bulk_\d+.css/);
+    test.ok(!!(matches || [])[0], 'filename in html should renamed');
+    test.ok(grunt.file.exists('test/tmp/copysrc/' + matches[0]), 'bulk.css should be copied');
+    test.ok(grunt.file.exists('test/tmp/copysrc/bulk.css'), 'bulk.css should be reserved');
     test.done();
   }
 };

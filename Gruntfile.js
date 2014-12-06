@@ -37,8 +37,8 @@ module.exports = function(grunt) {
     copy: {
       all: {
         expand: true,
-        cwd: 'test/<%= src %>',
-        src: ['**/*.{gif,jpg,png,css,js,html}'],
+        cwd: 'test',
+        src: ['{<%= src %>,copysrc}/**/*.{gif,jpg,png,css,js,html}'],
         dest: 'test/<%= dest %>'
       }
     },
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
     stamp: {
       options: {
         prefix: '__img_cnd_prefix__',
-        baseDir: 'test/<%= dest %>'
+        baseDir: 'test/<%= dest %>/<%= src %>'
       },
       js: {
         options: {
@@ -63,7 +63,7 @@ module.exports = function(grunt) {
         },
         expand: true,
         cwd: 'test/<%= dest %>',
-        src: ['**/*.js'],
+        src: ['**/tmp.js'],
         dest: 'test/<%= dest %>'
       },
       css: {
@@ -76,7 +76,7 @@ module.exports = function(grunt) {
         },
         expand: true,
         cwd: 'test/<%= dest %>',
-        src: ['**/*.css'],
+        src: ['**/tmp.css'],
         dest: 'test/<%= dest %>'
       },
       html: {
@@ -88,8 +88,18 @@ module.exports = function(grunt) {
         },
         expand: true,
         cwd: 'test/<%= dest %>',
-        src: ['**/*.html'],
+        src: ['**/tmp.html'],
         dest: 'test/<%= dest %>'
+      },
+      copy: {
+        options: {
+          changeFileName: true,
+          doCopy: true
+        },
+        expand: true,
+        cwd: 'test/tmp/copysrc',
+        src: ['index.html'],
+        dest: 'test/tmp/copysrc'
       }
     },
 
@@ -118,6 +128,6 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jshint', 'clean', 'cases', 'copy', 'stamp']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('test', [ 'default', 'nodeunit']);
+  grunt.registerTask('test', ['default', 'nodeunit']);
 
 };
