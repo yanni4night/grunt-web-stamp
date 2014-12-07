@@ -48,9 +48,9 @@
   ],
   "dependencies": {
     "extend": "~2.0.0",
-    "filestamp": "~0.1.4",
+    "filestamp": "~0.2.0",
     "fs-extra": "~0.12.0",
     "string": "~2.2.0",
-    "urljoin": "~0.1.4"
+    "urljoin": "~0.1.5"
   }
 }
