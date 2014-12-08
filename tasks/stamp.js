@@ -4,20 +4,19 @@
  *
  * changelog
  * 2014-11-03[15:22:17]:authorized
+ * 2014-12-06[16:05:03]:never prepend prefix to relative paths
  *
  * @author yanni4night@gmail.com
- * @version 0.2.4
+ * @version 0.2.5
  * @since 0.1.0
  */
 
 'use strict';
-var crypto = require('crypto');
 var sysPath = require('path');
 var Stamper = require('filestamp');
 var extend = require('extend');
 var urljoin = require('urljoin');
 var fs = require('fs-extra');
-var S = require('string');
 
 //It's not useful when changeFileName is set to true
 var sgDefaultStampName = 't';
@@ -31,17 +30,17 @@ module.exports = function(grunt) {
       whole: false
     },
     'l': {
-      pattern: /<link.* href\s*=((['"])?(\s*\S+?\.css\b(\?[^\)"']*)?\s*)\2?)/img,
+      pattern: /<link[^>]*? href\s*=((['"])?(\s*\S+?\.css\b(\?[^\)"']*)?\s*)\2?)/img,
       index: 3,
       whole: false
     },
     's': {
-      pattern: /<script.* src\s*=((['"])?(\s*\S+?\.js\b(\?[^\)"']*)?\s*)\2?)/img,
+      pattern: /<script[^>]*? src\s*=((['"])?(\s*\S+?\.js\b(\?[^\)"']*)?\s*)\2?)/img,
       index: 3,
       whole: false
     },
     'i': {
-      pattern: /<img.* src\s*=((['"])?(\s*\S+?\.(gif|bmp|jpe?g|ico|png|webp)\b(\?[^\)"']*)?\s*)\2?)/img,
+      pattern: /<img[^>]*? src\s*=((['"])?(\s*\S+?\.(gif|bmp|jpe?g|ico|png|webp)\b(\?[^\)"']*)?\s*)\2?)/img,
       index: 3,
       whole: false
     }
@@ -52,18 +51,16 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('stamp', 'Handle static resource timestamp in css&html', function() {
 
     var options = this.options({
-      encoding: 'utf-8', //Just for read file
       prefix: '', //final path prefix
       baseDir: '.', //basic directory of target resources
       pattern: 'u|l|s|i', //url&link&script&img
       stampName: sgDefaultStampName, //p.png?{stampName}=876677,not useful when changFileName is set to true
-      crypto: 'md5', //md5/sha1/sha256/sha512
+      algorithm: 'md5', //digest/sha1/sha256/sha512
+      crypto: null, //alias for algorithm
       changeFileName: false, //main.css => main_be65d0.css
       regex: {},
-      ignoreMissing: false,
-      forceAbsolute: true,
-      missingStamp: null, //Function
       fileStamp: null, //Function
+      doCopy: false,
       buildFileName: function(filename, ext, stamp) {
         return filename + '_' + stamp + "." + ext;
       }
@@ -76,8 +73,11 @@ module.exports = function(grunt) {
 
     var regexes = extend({}, globalPattern, options.regex || {});
 
-    var stamper = new Stamper(options); //Stamper has to be singleton in one task
-    var nameChangeCache = {}; //This is too.
+    var stamper = new Stamper({
+      algorithm: options.algorithm || options.crypto,
+      baseDir: options.baseDir,
+      ignoreError: true
+    }); //Stamper has to be singleton in one task
 
     //Using options for future more parameters
     var Replacer = function(options) {
@@ -91,13 +91,19 @@ module.exports = function(grunt) {
        * @param  {String} stamp
        */
       changeFileName: function(path, stamp) {
-        if (/(\w+)(\.(\w+))?$/.test(path)) {
-          var s = RegExp.$1 + (RegExp.$2 || "");
-          var d = options.buildFileName(RegExp.$1, RegExp.$3, stamp);
-          return path.replace(s, d);
-        } else {
-          return path;
+        var name = sysPath.basename(path);
+        var ext = sysPath.extname(name);
+        var stub = path.slice(0, name ? (-name.length) : path.length - 1);
+        if (ext.length) {
+          name = name.slice(0, -ext.length);
         }
+
+        //Ignore leading dot
+        if ('.' === ext[0]) {
+          ext = ext.slice(1);
+        }
+
+        return urljoin(stub, options.buildFileName(name, ext, stamp));
       },
       replace: function(content) {
 
@@ -118,7 +124,7 @@ module.exports = function(grunt) {
         return content;
       },
       _stamp: function(url) {
-        var content, md5, aliasName, fileName, prefix = options.prefix,
+        var digest, aliasName, fileName, prefix = options.prefix,
           isRelative = false;
 
         //Do trim
@@ -135,43 +141,46 @@ module.exports = function(grunt) {
           return url;
         }
 
-        if (!S(parsedUrl.pathname).startsWith('/') && !options.forceAbsolute) {
+        if (!/^\//.test(parsedUrl.pathname)) {
           isRelative = true;
           fileName = sysPath.join(sysPath.dirname(this.options.filepath), parsedUrl.pathname);
         } else {
           fileName = sysPath.join(options.baseDir, parsedUrl.pathname);
         }
 
-        md5 = 'function' === typeof options.fileStamp ? options.fileStamp(fileName) : stamper.compute(parsedUrl.pathname, isRelative ? sysPath.dirname(this.options.filepath) : null);
+        digest = 'function' === typeof options.fileStamp ? options.fileStamp(fileName) : stamper.compute(parsedUrl.pathname, isRelative ? sysPath.dirname(this.options.filepath) : null);
 
         if ('function' === typeof prefix) {
           prefix = prefix(parsedUrl.pathname);
         }
 
-        if (!md5) {
-          if (options.ignoreMissing) {
-            md5 = 'function' === typeof options.missingStamp ? options.missingStamp(fileName) : Number(Date.now()).toString(36);
-          } else {
-            return urljoin(prefix, url);
-          }
+
+        //Never prepend prefix to relative paths
+        if (isRelative) {
+          prefix = '';
+        }
+
+        //Do not override the existing timestamp
+        if (parsedUrl.query[options.stampName] && !options.changeFileName) {
+          //If a stamp name does exist,just prepend a prefix
+          return urljoin(prefix, url);
+        }
+
+        if (!digest) {
+          //If we do not ignore missing files,just prepend a prefix
+          return urljoin(prefix, url);
         }
 
         if (options.changeFileName) {
-          if (!(aliasName = nameChangeCache[fileName]) && fs.existsSync(fileName)) {
-            aliasName = this.changeFileName(url, md5);
-            //fs.renameSync(fileName, this.changeFileName(fileName, md5));
-            fs.copySync(fileName, this.changeFileName(fileName, md5));
-            nameChangeCache[fileName] = aliasName;
+          aliasName = this.changeFileName(url, digest);
+          if (fs.existsSync(fileName)) {
+            (options.doCopy? fs.copySync : fs.renameSync).call(fs, fileName, this.changeFileName(fileName, digest));
           }
-          if (aliasName) {
-            return urljoin(prefix, aliasName);
-          }
+
+          return urljoin(prefix, aliasName);
         }
 
-        if (!parsedUrl.query[options.stampName]) {
-          //If we already has a stamp ,ignore 
-          parsedUrl.query[options.stampName] = md5;
-        }
+        parsedUrl.query[options.stampName] = digest;
 
         return urljoin(prefix, require('url').format(parsedUrl));
 
@@ -201,7 +210,7 @@ module.exports = function(grunt) {
             pattern = String(options.pattern);
           }
 
-          if (~pattern.split('|').indexOf(key)) {
+          if (pattern.split('|').indexOf(key) > -1) {
             var r = new Replacer({
               patternName: key,
               filepath: filepath

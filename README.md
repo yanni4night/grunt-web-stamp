@@ -78,7 +78,9 @@ You can make any combination of them,they're case-sensitive.
 You can assign a function instead.
 
     {
-        "pattern":function(filepath){return /\.html$/.test(filepath)?"l|i|s":"u";}
+        "pattern":function(filepath){
+          return /\.html$/.test(filepath)?"l|i|s":"u";
+        }
     }
 
 #### stampName
@@ -87,17 +89,27 @@ Default value: `'t'`
 
 Query name for the timestamp.
 
-#### crypto
+#### algorithm
 Type: `String`
 Default value: `'md5'`
 
 A crypto algorithm name.More available names are `sha1`,`sha256` and `sha512`.
+
+####cryto
+Alias for algorithm,_deprecated_.
 
 #### changeFileName
 Type: `Boolean`
 Default value: `false`
 
 If set to true,stamp will be merged into filname instead of appended.Note that this will **not** rename the real file but **copy** it.
+
+####doCopy
+Type: `Boolean`
+Default value: `false`
+Since: 0.5.0
+
+Copy instead of rename when `changeFileName` is set to true.
 
 #### regex
 Type: `Object`
@@ -133,23 +145,6 @@ A function calculates a file's stamp,the file path is the parameter passed in ,E
       return md5(path) + Date.now();
     }
 
-#### ignoreMissing
-Type: `Boolean`
-Default value:  `false`
-
-If set true,an UNIX timestamp in 36 _hexadecimal_ will be the stamp if the file is not found.Or else nothing will be appended,and warnings is displayed.
-
-#### missingStamp
-Type: `Function`
-Default value: `null`
-
-Like [filestamp](#filestamp),but is used for missing files.This will not work if [ignoreMissing](#ignoremissing) set to false.
-
-#### forceAbsolute
-Type: `Boolean`
-Default value: `true`
-
-All the urls treated as *absolute*,or only the ones start with '/' would be.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).

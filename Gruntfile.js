@@ -15,6 +15,8 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
+    src: 'fixtures',
+    dest: 'tmp',
     jshint: {
       all: [
         'Gruntfile.js',
@@ -30,67 +32,74 @@ module.exports = function(grunt) {
 
     // Before generating any new files, remove any previously-created files.
     clean: {
-      tests: ['tmp', "**/._*"],
+      tests: ['test/<%= dest %>'],
     },
     copy: {
-      static: {
+      all: {
         expand: true,
-        cwd: 'test/source',
-        src: ['**/*.{png,css,js,html}'],
-        dest: 'tmp'
+        cwd: 'test',
+        src: ['{<%= src %>,copysrc}/**/*.{gif,jpg,png,css,js,html}'],
+        dest: 'test/<%= dest %>'
       }
     },
     // Configuration to be run (and then tested).
     stamp: {
       options: {
-        baseDir: 'tmp',
-        prefix: 'http://p0.img.cdn.com/'
+        prefix: '__img_cnd_prefix__',
+        baseDir: 'test/<%= dest %>/<%= src %>'
       },
-      html: {
+      js: {
         options: {
-          prefix: function(file) {
-            return /\.css$/.test(file) ? 'http://p0.css.cdn.com/' : 'http://p0.js.cdn.com/';
-          },
-          pattern: "s|l|i",
-          baseDir: 'test/fixtures',
-          ignoreMissing: true,
-          missingStamp: function(path) {
-            return Date.now();
-          },
-          fileStamp: function(path) {
-            return 0x11929;
-          }
-        },
-        expand: true,
-        cwd: 'tmp',
-        src: ['**/*.html'],
-        dest: 'tmp'
-      },
-      css: {
-        options: {
-          forceAbsolute: false,
           pattern: function() {
-            return 'u|@';
+            return '@';
           },
-          stampName: '_',
-          crypto: 'sha256',
-          ignoreMissing: true,
-          changeFileName: true,
           regex: {
             '@': {
-              pattern: /@([\/\w-\.]+)@/mg,
+              pattern: /@([\/\w-\.\?=]+)@/mg,
               index: 1,
               whole: true
             }
-          },
+          }
+        },
+        expand: true,
+        cwd: 'test/<%= dest %>',
+        src: ['**/tmp.js'],
+        dest: 'test/<%= dest %>'
+      },
+      css: {
+        options: {
+          algorithm: 'sha256',
+          changeFileName: true,
           buildFileName: function(name, ext, stamp) {
             return name + '-' + stamp + "." + ext;
           }
         },
         expand: true,
-        cwd: 'tmp',
-        src: ['**/*.css'],
-        dest: 'tmp'
+        cwd: 'test/<%= dest %>',
+        src: ['**/tmp.css'],
+        dest: 'test/<%= dest %>'
+      },
+      html: {
+        options: {
+          prefix: function(file) {
+            return /\.css$/.test(file) ? '__css_cnd_prefix__' : '__js_cnd_prefix__';
+          },
+          ignoreError: true
+        },
+        expand: true,
+        cwd: 'test/<%= dest %>',
+        src: ['**/tmp.html'],
+        dest: 'test/<%= dest %>'
+      },
+      copy: {
+        options: {
+          changeFileName: true,
+          doCopy: true
+        },
+        expand: true,
+        cwd: 'test/tmp/copysrc',
+        src: ['index.html'],
+        dest: 'test/tmp/copysrc'
       }
     },
 
@@ -105,12 +114,18 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('cases', 'create test cases', function() {
+    grunt.file.write('test/fixtures/static/css/tmp.css', require('./test/css_testcases').keys.join('\n'));
+    grunt.file.write('test/fixtures/static/js/tmp.js', require('./test/js_testcases').keys.join('\n'));
+    grunt.file.write('test/fixtures/tmp.html', require('./test/html_testcases').keys.join('\n'));
+  });
+
   // Actually load this plugin's task(s).
   grunt.loadTasks('tasks');
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('default', ['jshint', 'clean', 'copy', 'stamp']);
+  grunt.registerTask('default', ['jshint', 'clean', 'cases', 'copy', 'stamp']);
 
   // By default, lint and run all tests.
   grunt.registerTask('test', ['default', 'nodeunit']);

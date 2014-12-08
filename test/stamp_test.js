@@ -1,6 +1,7 @@
 'use strict';
 
 var grunt = require('grunt');
+var util = require('util');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -27,15 +28,70 @@ exports.stamp = {
     // setup here if necessary
     done();
   },
-  html: function(test) {
-    test.expect(4);
+  js: function(test) {
+    var jsCases = require('./js_testcases');
+    var srclines = grunt.file.read('test/fixtures/static/js/tmp.js').split('\n');
+    var tmplines = grunt.file.read('test/tmp/fixtures/static/js/tmp.js').split('\n');
 
-    var actualCss = grunt.file.read('tmp/static/css/test.css');
-    var actualHtml = grunt.file.read('tmp/index.html');
-    test.equal(7, actualCss.match(/p\-212800/g).length, 'css stamp');
-    test.equal(true, /<link.*? href=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html link stamp');
-    test.equal(true, /<script.*? src=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html script stamp');
-    test.equal(true, /<img.*? src=(['"'])?.*?t=\d+?\1?/ig.test(actualHtml), 'html img stamp');
+    test.expect(tmplines.length * 2 + 1);
+
+    test.equal(srclines.length, tmplines.length, 'Number of lines of src and tmp files should equal');
+
+    tmplines.forEach(function(line, idx) {
+      var key = srclines[idx],
+        reg = jsCases.cases[key];
+      test.ok(!!reg, 'Pattern for ' + key + ' should exist');
+      test.ok(util.isRegExp(reg) ? reg.test(line) : ('string' === typeof reg ? reg === line : key === line), line + ' should match ' + reg);
+    });
+
+    test.done();
+  },
+  css: function(test) {
+    var cssCases = require('./css_testcases');
+    var srclines = grunt.file.read('test/fixtures/static/css/tmp.css').split('\n');
+    var tmplines = grunt.file.read('test/tmp/fixtures/static/css/tmp.css').split('\n');
+
+    test.expect(tmplines.length * 2 + 1);
+
+    test.equal(srclines.length, tmplines.length, 'Number of lines of src and tmp files should equal');
+
+    tmplines.forEach(function(line, idx) {
+      var key = srclines[idx],
+        reg = cssCases.cases[key];
+      test.ok(!!reg, 'Pattern for ' + key + ' should exist');
+      test.ok(util.isRegExp(reg) ? reg.test(line) : ('string' === typeof reg ? reg === line : key === line), line + ' should match ' + reg);
+    });
+
+    test.done();
+  },
+  html: function(test) {
+    var htmlCases = require('./html_testcases');
+    var srclines = grunt.file.read('test/fixtures/tmp.html').split('\n');
+    var tmplines = grunt.file.read('test/tmp/fixtures/tmp.html').split('\n');
+
+    test.expect(tmplines.length * 2 + 1);
+
+    test.equal(srclines.length, tmplines.length, 'Number of lines of src and tmp files should equal');
+
+    tmplines.forEach(function(line, idx) {
+      var key = srclines[idx],
+        reg = htmlCases.cases[key];
+      test.ok(!!reg, 'Pattern for ' + key + ' should exist');
+      test.ok(util.isRegExp(reg) ? reg.test(line) : ('string' === typeof reg ? reg === line : key === line), line + ' should match ' + reg);
+    });
+
+    test.done();
+  },
+  copy: function(test) {
+    var content = grunt.file.read('test/tmp/copysrc/index.html');
+    var matches = content.match(/bulk_\d+.css/);
+    test.ok(!!(matches || [])[0], 'filename in html should renamed');
+    test.ok(grunt.file.exists('test/tmp/copysrc/' + matches[0]), 'bulk.css should be copied');
+    test.ok(grunt.file.exists('test/tmp/copysrc/bulk.css'), 'bulk.css should be reserved');
+    matches = content.match(/mock_\d+.js/);
+    test.ok(!!(matches || [])[0], 'filename in html should renamed');
+    test.ok(grunt.file.exists('test/tmp/copysrc/' + matches[0]), 'mock.js should be copied');
+    test.ok(grunt.file.exists('test/tmp/copysrc/mock.js'), 'mock.js should be reserved');
     test.done();
   }
 };
