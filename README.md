@@ -95,8 +95,8 @@ Default value: `'md5'`
 
 A crypto algorithm name.More available names are `sha1`,`sha256` and `sha512`.
 
-####cryto
-Alias for algorithm,_deprecated_.
+####crypto
+Alias for _algorithm_,but *deprecated*,it may be removed in the future.
 
 #### changeFileName
 Type: `Boolean`
