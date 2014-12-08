@@ -2,10 +2,10 @@
 
 [![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Build status][appveyor-image]][appveyor-url] [![Dependency status][david-dm-image]][david-dm-url] [![De vDependency status][david-dm-dev-image]][david-dm-dev-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Built with Grunt][grunt-image]][grunt-url]
 
-We now support more custom characteristics.
+_v0.5.0_ has removed some options and fixed some bugs.
 
-> Add timestamp to the url path.It search `<img/>`,`<link/>`,`<script/>` and `url()` to resolve
-> every path and calculate timestamp to append to it.
+> Add timestamp to the url path.It searches `<img/>`,`<link/>`,`<script/>` and `url()` to resolve
+> every path and calculates timestamp to append to it.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
