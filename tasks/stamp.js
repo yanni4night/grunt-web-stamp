@@ -167,6 +167,7 @@ module.exports = function(grunt) {
         }
 
         if (!digest) {
+          grunt.log.warn('Cannot stamp key:"' + url + '" in ' + this.options.filepath);
           //If we do not ignore missing files,just prepend a prefix
           return urljoin(prefix, url);
         }
@@ -174,7 +175,7 @@ module.exports = function(grunt) {
         if (options.changeFileName) {
           aliasName = this.changeFileName(url, digest);
           if (fs.existsSync(fileName)) {
-            (options.doCopy? fs.copySync : fs.renameSync).call(fs, fileName, this.changeFileName(fileName, digest));
+            (options.doCopy ? fs.copySync : fs.renameSync).call(fs, fileName, this.changeFileName(fileName, digest));
           }
 
           return urljoin(prefix, aliasName);
