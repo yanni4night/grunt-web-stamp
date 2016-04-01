@@ -16,8 +16,6 @@ var cases = {
     'url(/static/img/p.png)': new RegExp('url\\(' + PREFIX + '\\/static\\/img\\/p' + STAMP + '.png' + '\\)'),
     /*normal absolute path with missing file on the disk*/
     'url(/static/img/missing.png)': 'url(' + PREFIX + '/static/img/missing.png' + ')',
-    /*absolute path with template tags,this can be seem as another missing file*/
-    'url(/static/img/{{tpl}}.png)': 'url(' + PREFIX + '/static/img/{{tpl}}.png' + ')',
     /*normal relative path*/
     'url(../img/p.png)': new RegExp('url\\(../img/p' + STAMP + '.png\\)'),
     /*normal relative path with timestamp*/
@@ -26,8 +24,6 @@ var cases = {
     'url(../img/missing.png)': true,
     /*normal relative path with missing file and timestamp*/
     'url(../img/missing.png?t=89)': true,
-    /*relative path with template tags,this can be seem as another missing file*/
-    'url(../img/{{tpl}}.png)': true,
     /*absolute path wrapped by quotation marks*/
     'url("/static/img/p.png")': new RegExp('url\\("' + PREFIX + '/static/img/p' + STAMP + '.png"\\)'),
     /*absolute path wrapped by single quotation marks*/

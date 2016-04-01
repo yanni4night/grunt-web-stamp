@@ -18,8 +18,6 @@ var cases = {
     '<link href =\'static/css/tmp.css\' rel="stylesheet"/>': new RegExp('static/css/tmp.css' + STAMP),
     /* normal absolute path */
     '<link href ="/static/css/tmp.css" rel="stylesheet"/>': new RegExp(PREFIX + '/static/css/tmp.css' + STAMP),
-    /* missing path */
-    '<link href ="missing{key}.css" rel="stylesheet"/>': true,
     /* path with spaces inside */
     '<link href="  static/css/tmp.css?p=0  " rel="stylesheet"/>': new RegExp('static/css/tmp.css\\?p=0&' + STAMP.slice(2)),
     /* normal relative script path */
