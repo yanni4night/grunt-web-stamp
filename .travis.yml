@@ -3,7 +3,9 @@ before_install:
   - npm install -g grunt-cli
   - npm uninstall grunt # https://github.com/npm/npm/issues/3958
 node_js:
-  - "0.10" 
+  - "0.12" 
+  - "4.2" 
+  - "5.1" 
 after_script:
   - npm install -g istanbul
   - npm run coveralls
